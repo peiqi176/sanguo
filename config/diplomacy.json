@@ -1,0 +1,19 @@
+﻿{
+  "actions": {
+    "declare_war": { "name": "宣战", "effect": "hostile", "trust_delta": -100 },
+    "ally": { "name": "结盟", "effect": "alliance", "trust_required": 60, "cost": { "gold": 100 } },
+    "trade": { "name": "贸易", "effect": "trade", "trust_delta": 5, "interval": 30 },
+    "tribute": { "name": "进贡", "effect": "tribute", "trust_delta": 10, "cost": { "food": 100, "gold": 50 } },
+    "marriage": { "name": "通婚", "effect": "marriage", "trust_delta": 30, "cost": { "gold": 300 }, "requires_general": true },
+    "sow_discord": { "name": "离间", "effect": "sabotage", "trust_delta_target": -25, "success_rate": 0.6, "cost": { "gold": 200 } },
+    "break_relations": { "name": "断交", "effect": "hostile", "trust_delta": -30 }
+  },
+  "trust": { "min": 0, "max": 100, "default": 50, "passive_per_sec": 0.01 },
+  "relations": { "alliance": "结盟", "neutral": "中立", "war": "交战", "trade": "贸易" },
+  "ai_personality": {
+    "aggressive": { "declare_war_trust": 30, "attack_frequency": 0.8 },
+    "defensive": { "declare_war_trust": 15, "attack_frequency": 0.4 },
+    "diplomatic": { "ally_priority": 0.7, "trade_priority": 0.8 }
+  }
+}
+

@@ -1,0 +1,8 @@
+﻿{
+  "seasons": ["spring","summer","autumn","winter"],
+  "duration_per_season": 120,
+  "spring": { "name": "春", "particle": "blossom", "color_tint": "#e8f0d0", "farm_mod": 1.0, "move_mod": 1.0, "water_frozen": false },
+  "summer": { "name": "夏", "particle": "heat_haze", "color_tint": "#e8e0b8", "farm_mod": 1.1, "move_mod": 1.0, "water_frozen": false },
+  "autumn": { "name": "秋", "particle": "falling_leaves", "color_tint": "#e0c890", "farm_mod": 1.5, "move_mod": 1.0, "water_frozen": false },
+  "winter": { "name": "冬", "particle": "snow", "color_tint": "#d8e8f0", "farm_mod": 0.4, "move_mod": 0.85, "water_frozen": true }
+}

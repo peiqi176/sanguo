@@ -1,0 +1,22 @@
+﻿{
+  "_meta": { "note": "辎重车后勤系统；断粮=胜负手；机械由士兵拖拽不自走" },
+  "supply_cart": {
+    "hp": 200, "move_speed": 1.8, "capacity": 500,
+    "cost": { "wood": 120, "food": 80, "stone": 40 }, "build_time": 25,
+    "source_building": "siege_workshop", "requires_tech": "supply_cart",
+    "aura_radius": 6.0,
+    "effects": { "stamina_recover": 4.0, "food_supply": 2.0, "morale_recover": 1.0 }
+  },
+  "hauling": {
+    "ladder": 4, "ram": 4, "bed_bow": 4, "trebuchet": 6, "thunder_car": 8,
+    "speed_per_hauler": 0.3
+  },
+  "village_supply": {
+    "purchase_rate": 1.0, "cost_per_food": 2.0, "cost_per_wood": 3.0,
+    "max_buy_per_trip": 50
+  },
+  "field_kits": {
+    "small": { "cost": { "gold": 20 }, "heal": 50 },
+    "large": { "cost": { "gold": 60 }, "heal": 150 }
+  }
+}

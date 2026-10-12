@@ -1,0 +1,26 @@
+# Godot 4 generated files
+.godot/
+
+# Godot editor cache
+*.uid
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build outputs
+build/
+bin/
+*.exe
+*.pck
+*.zip
+
+# Logs
+*.log

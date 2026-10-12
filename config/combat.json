@@ -1,0 +1,50 @@
+﻿{
+  "_meta": { "note": "微克制系数+30%~+50%；暴击伤害=普攻×150%；士气100时+30%全属性" },
+  "counter": {
+    "spear_vs_cavalry": 0.45,
+    "cavalry_vs_ranged": 0.40,
+    "ranged_vs_spear": 0.40,
+    "sword_vs_spear": 0.35,
+    "axeman_vs_heavy": 0.40,
+    "siege_vs_structure": 1.0
+  },
+  "crit": {
+    "base_chance": 0.05,
+    "general_chance": 0.18,
+    "damage_mult": 1.5
+  },
+  "morale_combat": {
+    "default": 50, "max": 100, "min": 0,
+    "bonus_at_max": 0.30,
+    "penalty_at_min": -0.10,
+    "rout_threshold": 15,
+    "recover_per_sec": 0.5,
+    "decay_per_hit": 2.0,
+    "leader_killed_penalty": 30,
+    "duel_win_bonus": 15,
+    "duel_lose_penalty": 20
+  },
+  "stamina": {
+    "max": 100, "default": 100,
+    "march_cost_per_sec": 1.5,
+    "combat_cost_per_sec": 3.0,
+    "recover_idle_per_sec": 2.0,
+    "recover_in_city_per_sec": 5.0,
+    "recover_supply_aura_per_sec": 4.0,
+    "zero_stamina_penalty": 0.25
+  },
+  "hp_regen": {
+    "out_of_combat_delay": 5.0,
+    "wild_regen_per_sec": 0.008,
+    "city_regen_per_sec": 0.02,
+    "garrison_regen_per_sec": 0.02
+  },
+  "experience": {
+    "kill_exp": 20,
+    "assist_exp": 8,
+    "building_destroy_exp": 50
+  },
+  "siege_haulers": {
+    "ladder": 4, "ram": 4, "bed_bow": 4, "trebuchet": 6, "thunder_car": 8
+  }
+}

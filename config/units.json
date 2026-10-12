@@ -1,0 +1,202 @@
+﻿{
+  "_meta": {
+    "version": "2.2",
+    "game": "三分天下·再起",
+    "note": "所有兵种共用1-9级统一经验曲线；兵种进阶靠转职训练营转职，与等级无关。杀人累计+0.12/杀，软上限300"
+  },
+  "level_curve": {
+    "1_to_2": { "exp": 120, "growth": { "atk": 0.02, "def": 0.02 } },
+    "2_to_3": { "exp": 140, "growth": { "atk": 0.02, "def": 0.02 } },
+    "3_to_4": { "exp": 160, "growth": { "atk": 0.02, "def": 0.02 } },
+    "4_to_5": { "exp": 180, "growth": { "atk": 0.03, "def": 0.03 } },
+    "5_to_6": { "exp": 200, "growth": { "atk": 0.03, "def": 0.03 }, "can_promote": true },
+    "6_to_7": { "exp": 230, "growth": { "atk": 0.03, "def": 0.03 } },
+    "7_to_8": { "exp": 260, "growth": { "atk": 0.04, "def": 0.04 } },
+    "8_to_9": { "exp": 300, "growth": { "atk": 0.04, "def": 0.04 } }
+  },
+  "veteran_bonus": { "atk_per_kill": 0.12, "soft_cap_kills": 300 },
+  "units": {
+    "peasant": {
+      "name": "农夫", "category": "civilian", "tier": 0, "government_req": 1,
+      "hp": 40, "atk": 4, "def": 0, "atk_speed": 1.2, "move_speed": 3.0, "morale": 30,
+      "range": 0.6, "pop_cost": 1, "cost": { "food": 10, "gold": 5 }, "train_time": 18,
+      "abilities": ["gather", "build", "repair", "transport", "assign_post"]
+    },
+    "sword": {
+      "name": "刀兵", "category": "infantry", "tier": 1, "government_req": 1,
+      "hp": 80, "atk": 10, "def": 4, "atk_speed": 0.9, "move_speed": 2.6, "morale": 60,
+      "range": 0.6, "pop_cost": 1, "cost": { "wood": 20, "gold": 10 }, "train_time": 20,
+      "counters": ["spear"], "counter_bonus": 0.35, "promotes_to": "axeman"
+    },
+    "spear": {
+      "name": "枪兵", "category": "infantry", "tier": 1, "government_req": 1,
+      "hp": 90, "atk": 9, "def": 3, "atk_speed": 0.7, "move_speed": 2.4, "morale": 60,
+      "range": 1.1, "pop_cost": 1, "cost": { "wood": 20, "gold": 10 }, "train_time": 20,
+      "counters": ["cavalry_light","cavalry_heavy","tiger_leopard"], "counter_bonus": 0.45, "promotes_to": "gold_spear"
+    },
+    "archer": {
+      "name": "弓手", "category": "ranged", "tier": 1, "government_req": 1,
+      "hp": 55, "atk": 8, "def": 1, "atk_speed": 1.0, "move_speed": 2.3, "morale": 55,
+      "range": 3.5, "pop_cost": 1, "cost": { "wood": 25, "gold": 10 }, "train_time": 20,
+      "counters": ["spear"], "counter_bonus": 0.4, "promotes_to": "crossbow"
+    },
+    "axeman": {
+      "name": "斧头兵", "category": "infantry", "tier": 2, "government_req": 2,
+      "hp": 100, "atk": 14, "def": 5, "atk_speed": 0.7, "move_speed": 2.6, "morale": 65,
+      "range": 0.6, "pop_cost": 1, "cost": { "wood": 30, "gold": 20 }, "train_time": 14,
+      "source": "sword", "source_building": "training_camp",
+      "counters": ["heavy_armor","cavalry_heavy"], "counter_bonus": 0.4, "armor_pierce": 0.3, "promotes_to": "heavy_blade"
+    },
+    "gold_spear": {
+      "name": "金枪兵", "category": "infantry", "tier": 2, "government_req": 2,
+      "hp": 110, "atk": 12, "def": 4, "atk_speed": 0.6, "move_speed": 2.4, "morale": 65,
+      "range": 1.1, "pop_cost": 1, "cost": { "wood": 30, "gold": 20 }, "train_time": 14,
+      "source": "spear", "source_building": "training_camp",
+      "counters": ["cavalry_light","cavalry_heavy"], "counter_bonus": 0.5, "promotes_to": "iron_spear"
+    },
+    "crossbow": {
+      "name": "弩手", "category": "ranged", "tier": 2, "government_req": 2,
+      "hp": 65, "atk": 12, "def": 2, "atk_speed": 1.2, "move_speed": 2.3, "morale": 60,
+      "range": 4.0, "pop_cost": 1, "cost": { "wood": 25, "gold": 20 }, "train_time": 14,
+      "source": "archer", "source_building": "training_camp",
+      "counters": ["spear","axeman"], "counter_bonus": 0.35, "armor_pierce": 0.25, "promotes_to": "heavy_crossbow"
+    },
+    "sentinel": {
+      "name": "哨兵", "category": "scout", "tier": 2, "government_req": 2,
+      "hp": 50, "atk": 6, "def": 2, "atk_speed": 1.0, "move_speed": 4.0, "morale": 50,
+      "range": 1.0, "pop_cost": 1, "cost": { "wood": 15, "gold": 15 }, "train_time": 16,
+      "vision": 12, "abilities": ["scout"]
+    },
+    "cavalry_light": {
+      "name": "轻骑兵", "category": "cavalry", "tier": 2, "government_req": 2,
+      "hp": 110, "atk": 11, "def": 3, "atk_speed": 0.9, "move_speed": 5.4, "morale": 62,
+      "range": 0.7, "pop_cost": 1, "cost": { "wood": 20, "gold": 25 }, "train_time": 22,
+      "source_building": "stable", "requires_horse": true,
+      "counters": ["archer","crossbow"], "counter_bonus": 0.4,
+      "charge": { "damage": 18, "knockback": 1.5 }
+    },
+    "cavalry_archer": {
+      "name": "弓骑兵", "category": "cavalry", "tier": 2, "government_req": 2,
+      "hp": 95, "atk": 10, "def": 3, "atk_speed": 0.9, "move_speed": 5.3, "morale": 62,
+      "range": 3.8, "pop_cost": 1, "cost": { "wood": 25, "gold": 25 }, "train_time": 22,
+      "source_building": "stable", "requires_horse": true
+    },
+    "heavy_blade": {
+      "name": "重甲刀", "category": "infantry", "tier": 3, "government_req": 3,
+      "hp": 160, "atk": 19, "def": 9, "atk_speed": 0.75, "move_speed": 2.5, "morale": 70,
+      "range": 0.6, "pop_cost": 1, "cost": { "stone": 20, "gold": 35 }, "train_time": 18,
+      "source": "axeman", "source_building": "elite_camp", "armor_pierce": 0.2
+    },
+    "iron_spear": {
+      "name": "铁枪兵", "category": "infantry", "tier": 3, "government_req": 3,
+      "hp": 170, "atk": 17, "def": 7, "atk_speed": 0.6, "move_speed": 2.4, "morale": 70,
+      "range": 1.1, "pop_cost": 1, "cost": { "stone": 20, "gold": 35 }, "train_time": 18,
+      "source": "gold_spear", "source_building": "elite_camp",
+      "counters": ["cavalry_light","cavalry_heavy"], "counter_bonus": 0.5
+    },
+    "heavy_crossbow": {
+      "name": "强弩", "category": "ranged", "tier": 3, "government_req": 3,
+      "hp": 90, "atk": 16, "def": 4, "atk_speed": 1.2, "move_speed": 2.2, "morale": 65,
+      "range": 4.5, "pop_cost": 1, "cost": { "wood": 30, "gold": 35 }, "train_time": 18,
+      "source": "crossbow", "source_building": "elite_camp", "armor_pierce": 0.35
+    },
+    "cavalry_heavy": {
+      "name": "重骑兵", "category": "cavalry", "tier": 3, "government_req": 3,
+      "hp": 200, "atk": 15, "def": 7, "atk_speed": 0.8, "move_speed": 5.0, "morale": 70,
+      "range": 0.7, "pop_cost": 1, "cost": { "stone": 20, "gold": 50 }, "train_time": 24,
+      "source_building": "stable", "requires_horse": true, "can_direct_spawn": true,
+      "counters": ["archer","crossbow","heavy_blade"], "counter_bonus": 0.35,
+      "charge": { "damage": 28, "knockback": 2.5 }
+    },
+    "tiger_guard": {
+      "name": "虎贲近卫", "category": "infantry", "tier": 3, "government_req": 3,
+      "hp": 220, "atk": 20, "def": 11, "atk_speed": 0.8, "move_speed": 2.4, "morale": 75,
+      "range": 0.6, "pop_cost": 1, "cost": { "stone": 25, "gold": 55 }, "train_time": 24,
+      "source_building": "elite_camp", "role": "bodyguard", "city_defense_bonus": 0.3
+    },
+    "trebuchet": {
+      "name": "投石车", "category": "siege", "tier": 3, "government_req": 3,
+      "hp": 120, "atk": 45, "def": 3, "atk_speed": 0.12, "move_speed": 1.6, "morale": 50,
+      "range": 8.0, "pop_cost": 1, "cost": { "wood": 120, "gold": 40 }, "train_time": 30,
+      "source_building": "siege_workshop", "requires_haulers": 6, "siege_damage": 1.0,
+      "counters": ["wall_wood","wall_rammed","wall_stone","gate"], "counter_bonus": 1.0
+    },
+    "bed_bow": {
+      "name": "三弓床弩", "category": "siege", "tier": 3, "government_req": 3,
+      "hp": 110, "atk": 35, "def": 3, "atk_speed": 0.2, "move_speed": 1.9, "morale": 50,
+      "range": 9.0, "pop_cost": 1, "cost": { "wood": 90, "gold": 50 }, "train_time": 28,
+      "source_building": "siege_workshop", "requires_haulers": 4, "armor_pierce": 0.5,
+      "counters": ["infantry","siege"], "counter_bonus": 0.4
+    },
+    "imperial_blade": {
+      "name": "御林刀盾", "category": "infantry", "tier": 4, "government_req": 4,
+      "hp": 260, "atk": 22, "def": 12, "atk_speed": 0.8, "move_speed": 2.4, "morale": 78,
+      "range": 0.6, "pop_cost": 1, "cost": { "gold": 60, "stone": 30 }, "train_time": 28,
+      "source_building": "elite_camp", "armor_pierce": 0.15
+    },
+    "imperial_spear": {
+      "name": "御林枪", "category": "infantry", "tier": 4, "government_req": 4,
+      "hp": 240, "atk": 20, "def": 9, "atk_speed": 0.62, "move_speed": 2.5, "morale": 78,
+      "range": 1.1, "pop_cost": 1, "cost": { "gold": 60, "stone": 30 }, "train_time": 28,
+      "source_building": "elite_camp",
+      "counters": ["cavalry_light","cavalry_heavy","tiger_leopard"], "counter_bonus": 0.5
+    },
+    "imperial_archer": {
+      "name": "御林弓", "category": "ranged", "tier": 4, "government_req": 4,
+      "hp": 150, "atk": 19, "def": 6, "atk_speed": 1.3, "move_speed": 2.2, "morale": 75,
+      "range": 5.0, "pop_cost": 1, "cost": { "gold": 50, "wood": 30 }, "train_time": 28,
+      "source_building": "elite_camp", "armor_pierce": 0.3
+    },
+    "imperial_cavalry_archer": {
+      "name": "御林弓骑", "category": "cavalry", "tier": 4, "government_req": 4,
+      "hp": 180, "atk": 17, "def": 7, "atk_speed": 0.9, "move_speed": 5.2, "morale": 76,
+      "range": 4.2, "pop_cost": 1, "cost": { "gold": 60, "wood": 30 }, "train_time": 30,
+      "source_building": "elite_camp", "requires_horse": true
+    },
+    "thunder_car": {
+      "name": "霹雳车", "category": "siege", "tier": 4, "government_req": 4,
+      "hp": 160, "atk": 70, "def": 4, "atk_speed": 0.1, "move_speed": 1.5, "morale": 55,
+      "range": 10.0, "pop_cost": 1, "cost": { "wood": 160, "gold": 80 }, "train_time": 40,
+      "source_building": "siege_workshop", "requires_haulers": 8, "siege_damage": 1.5,
+      "counters": ["wall_stone","gate","building"], "counter_bonus": 1.2
+    },
+    "tiger_leopard": {
+      "name": "虎豹骑", "category": "cavalry", "tier": 3, "faction": "wei", "government_req": 3,
+      "hp": 240, "atk": 17, "def": 8, "atk_speed": 0.8, "move_speed": 5.2, "morale": 72,
+      "range": 0.7, "pop_cost": 1, "cost": { "stone": 25, "gold": 60 }, "train_time": 28,
+      "source_building": "stable", "requires_horse": true,
+      "counters": ["cavalry_heavy","archer"], "counter_bonus": 0.4,
+      "charge": { "damage": 32, "knockback": 2.8 }
+    },
+    "hengjiang_archer": {
+      "name": "横江射手", "category": "ranged", "tier": 2, "faction": "wu", "government_req": 2,
+      "hp": 75, "atk": 13, "def": 3, "atk_speed": 1.2, "move_speed": 2.4, "morale": 62,
+      "range": 4.2, "pop_cost": 1, "cost": { "gold": 35, "wood": 25 }, "train_time": 18,
+      "source_building": "water_camp", "water_bonus": 0.3, "armor_pierce": 0.25
+    },
+    "zhuge_nu": {
+      "name": "诸葛弩", "category": "ranged", "tier": 3, "faction": "shu", "government_req": 3,
+      "hp": 85, "atk": 14, "def": 5, "atk_speed": 1.8, "move_speed": 2.2, "morale": 70,
+      "range": 4.0, "pop_cost": 1, "cost": { "gold": 45, "wood": 20 }, "train_time": 22,
+      "source_building": "elite_camp", "armor_pierce": 0.2
+    },
+    "baier_soldier": {
+      "name": "白毦兵", "category": "infantry", "tier": 4, "faction": "shu", "government_req": 4,
+      "hp": 280, "atk": 21, "def": 12, "atk_speed": 0.75, "move_speed": 2.5, "morale": 80,
+      "range": 0.6, "pop_cost": 1, "cost": { "gold": 65, "stone": 25 }, "train_time": 30,
+      "source_building": "elite_camp", "mountain_bonus": 0.25
+    },
+    "qingzhou_soldier": {
+      "name": "青州兵", "category": "infantry", "tier": 3, "faction": "wei", "government_req": 3,
+      "hp": 210, "atk": 18, "def": 10, "atk_speed": 0.75, "move_speed": 2.5, "morale": 74,
+      "range": 0.6, "pop_cost": 1, "cost": { "gold": 50, "stone": 20 }, "train_time": 24,
+      "source_building": "elite_camp", "discipline_bonus": 0.15
+    },
+    "danyang_soldier": {
+      "name": "丹阳锐兵", "category": "infantry", "tier": 3, "faction": "wu", "government_req": 3,
+      "hp": 180, "atk": 16, "def": 8, "atk_speed": 0.85, "move_speed": 2.6, "morale": 72,
+      "range": 0.6, "pop_cost": 1, "cost": { "gold": 45, "stone": 15 }, "train_time": 22,
+      "source_building": "elite_camp", "mountain_bonus": 0.2, "plain_bonus": 0.15
+    }
+  }
+}

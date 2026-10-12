@@ -1,0 +1,44 @@
+﻿{
+  "factions": {
+    "wei": {
+      "name": "曹魏", "leader": "曹操", "color": "#b93a3a",
+      "economy_bonus": { "farm_output": 0.30 },
+      "unique_units": ["tiger_leopard","qingzhou_soldier"],
+      "unique_buildings": ["iron_office"],
+      "playstyle": "厚积薄发的装甲洪流",
+      "starting_resources": { "food": 200, "wood": 200, "stone": 100, "gold": 150 }
+    },
+    "shu": {
+      "name": "蜀汉", "leader": "刘备", "color": "#4fae4f",
+      "economy_bonus": { "recruit_morale_cost": -0.3 },
+      "unique_units": ["zhuge_nu","baier_soldier"],
+      "playstyle": "名将联动、精准打击",
+      "starting_resources": { "food": 200, "wood": 200, "stone": 100, "gold": 150 }
+    },
+    "wu": {
+      "name": "孙吴", "leader": "孙权", "color": "#4a7fce",
+      "economy_bonus": { "trade_gold": 0.25, "water_move": 0.15 },
+      "unique_units": ["hengjiang_archer","danyang_soldier"],
+      "unique_buildings": ["water_camp"],
+      "playstyle": "掌控水系与商贸",
+      "starting_resources": { "food": 200, "wood": 200, "stone": 100, "gold": 150 }
+    }
+  },
+  "tax_rates": {
+    "low":    { "gold_mult": 0.7, "morale_delta": 0.5 },
+    "medium": { "gold_mult": 1.0, "morale_delta": 0 },
+    "high":   { "gold_mult": 1.5, "morale_delta": -1.2 }
+  },
+  "morale": {
+    "max": 100, "min": 0, "default": 70,
+    "revolt_threshold": 20, "famine_threshold": 10,
+    "governor_bonus": 0.3, "village_bonus": 0.1
+  },
+  "resources": {
+    "food":   { "name": "粟米", "icon": "🍚", "color": "#e8c870" },
+    "wood":   { "name": "木材", "icon": "🪵", "color": "#a0784a" },
+    "stone":  { "name": "石料", "icon": "🪨", "color": "#b0a898" },
+    "gold":   { "name": "铜钱", "icon": "🥇", "color": "#e8b840" }
+  }
+}
+

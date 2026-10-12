@@ -1,0 +1,5 @@
+﻿<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" fill="#2a1e13"/>
+  <path d="M64 12 L104 40 L104 88 L64 116 L24 88 L24 40 Z" fill="#8a6a2f" stroke="#c9a24b" stroke-width="3"/>
+  <text x="64" y="78" font-family="serif" font-size="52" fill="#f3e2bd" text-anchor="middle" font-weight="bold">三</text>
+</svg>

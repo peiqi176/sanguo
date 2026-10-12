@@ -1,0 +1,44 @@
+﻿{
+  "_meta": { "note": "翰林院三分支科技；官府2级需科技达60%；辎重车为器械研究前置" },
+  "branches": {
+    "civilian": {
+      "name": "民生科技",
+      "techs": {
+        "farm_tech_1": { "name": "精耕细作", "effect": { "farm_output": 0.15 }, "cost": { "gold": 80, "food": 100 }, "time": 30, "gov_req": 1 },
+        "farm_tech_2": { "name": "轮作休耕", "effect": { "farm_output": 0.15 }, "cost": { "gold": 150, "food": 200 }, "time": 45, "requires": ["farm_tech_1"], "gov_req": 2 },
+        "fishery_tech": { "name": "渔猎改良", "effect": { "fishery_output": 0.20 }, "cost": { "gold": 100, "wood": 80 }, "time": 35, "gov_req": 1 },
+        "morale_tech": { "name": "仁政安民", "effect": { "morale_recover": 0.5 }, "cost": { "gold": 120, "food": 100 }, "time": 40, "gov_req": 2 },
+        "cart_tech": { "name": "农车运输", "effect": { "gather_speed": 0.20 }, "cost": { "gold": 150, "wood": 120 }, "time": 40, "gov_req": 2 },
+        "workshop_tech": { "name": "百工兴盛", "effect": { "gold_output": 0.20 }, "cost": { "gold": 100, "wood": 80 }, "time": 35, "gov_req": 1 }
+      }
+    },
+    "military": {
+      "name": "军事科技",
+      "techs": {
+        "inf_atk_1": { "name": "利刃锻造", "effect": { "infantry_atk": 0.10 }, "cost": { "gold": 100, "stone": 50 }, "time": 30, "gov_req": 1 },
+        "inf_def_1": { "name": "铁甲护身", "effect": { "infantry_def": 0.10 }, "cost": { "gold": 100, "stone": 50 }, "time": 30, "gov_req": 1 },
+        "ranged_tech": { "name": "劲弩长弓", "effect": { "ranged_atk": 0.12, "ranged_range": 0.10 }, "cost": { "gold": 120, "wood": 80 }, "time": 35, "gov_req": 1 },
+        "cavalry_tech": { "name": "骑兵操练", "effect": { "cavalry_atk": 0.12, "cavalry_speed": 0.05 }, "cost": { "gold": 150, "wood": 60 }, "time": 40, "gov_req": 2, "requires_building": "stable" },
+        "morale_mil_tech": { "name": "军纪严明", "effect": { "army_morale": 0.15 }, "cost": { "gold": 130, "food": 100 }, "time": 35, "gov_req": 2 },
+        "veteran_tech": { "name": "老兵历练", "effect": { "exp_gain": 0.25 }, "cost": { "gold": 180, "food": 120 }, "time": 45, "gov_req": 3 },
+        "elite_tech": { "name": "精锐之师", "effect": { "tier3_atk": 0.10, "tier3_def": 0.10 }, "cost": { "gold": 250, "stone": 100 }, "time": 55, "gov_req": 3 }
+      }
+    },
+    "siege": {
+      "name": "器械工程",
+      "techs": {
+        "supply_cart": { "name": "辎重车", "effect": { "unlock_supply_cart": true }, "cost": { "gold": 100, "wood": 100 }, "time": 30, "gov_req": 2, "note": "器械研究前置" },
+        "ladder": { "name": "云梯", "effect": { "unlock_ladder": true }, "cost": { "gold": 80, "wood": 80 }, "time": 25, "gov_req": 2 },
+        "ram": { "name": "冲车", "effect": { "unlock_ram": true }, "cost": { "gold": 120, "wood": 100 }, "time": 30, "gov_req": 2 },
+        "trebuchet_tech": { "name": "投石机", "effect": { "unlock_trebuchet": true, "trebuchet_atk": 0.10 }, "cost": { "gold": 200, "wood": 150, "stone": 80 }, "time": 40, "gov_req": 3, "requires": ["supply_cart"] },
+        "bed_bow_tech": { "name": "三弓床弩", "effect": { "unlock_bed_bow": true }, "cost": { "gold": 180, "wood": 120 }, "time": 40, "gov_req": 3, "requires": ["supply_cart"] },
+        "thunder_tech": { "name": "霹雳车", "effect": { "unlock_thunder_car": true }, "cost": { "gold": 350, "wood": 200, "stone": 150 }, "time": 60, "gov_req": 4, "requires": ["trebuchet_tech"] }
+      }
+    }
+  },
+  "government_upgrade": {
+    "1_to_2": { "tech_completion_required": 0.6, "cost": { "food": 300, "wood": 220, "stone": 100 }, "time": 60 },
+    "2_to_3": { "cost": { "food": 520, "wood": 380, "stone": 220 }, "time": 75 },
+    "3_to_4": { "cost": { "food": 820, "wood": 640, "stone": 420 }, "time": 90 }
+  }
+}

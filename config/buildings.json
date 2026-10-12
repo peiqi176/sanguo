@@ -1,0 +1,668 @@
+{
+  "_meta": {
+    "version": "2.2",
+    "note": "仓库/仓廪容量无限，核心约束为吞吐时间；牌楼为默认原始仓库兼招农"
+  },
+  "buildings": {
+    "government": {
+      "name": "官府",
+      "category": "governance",
+      "government_req": 1,
+      "hp": 1200,
+      "size": [
+        3,
+        3
+      ],
+      "cost": {},
+      "build_time": 0,
+      "pop_provide": 0,
+      "function": [
+        "upgrade_government",
+        "set_tax",
+        "appoint_governor"
+      ],
+      "levels": {
+        "1": {
+          "unlocks": [
+            "paifang",
+            "house",
+            "farm",
+            "fishery",
+            "lumber",
+            "quarry",
+            "workshop",
+            "barracks_sword",
+            "barracks_spear",
+            "barracks_archer",
+            "training_camp",
+            "hanlinyuan",
+            "granary",
+            "wall_inner"
+          ]
+        },
+        "2": {
+          "unlocks": [
+            "siege_workshop",
+            "inn",
+            "stable",
+            "training_camp_t2",
+            "barracks_special",
+            "wall_wood"
+          ],
+          "cost": {
+            "food": 300,
+            "wood": 220,
+            "stone": 100
+          },
+          "tech_required": 0.6
+        },
+        "3": {
+          "unlocks": [
+            "trebuchet",
+            "bed_bow",
+            "wall_rammed",
+            "wall_stone",
+            "arrow_tower",
+            "crossbow_tower",
+            "elite_camp"
+          ],
+          "cost": {
+            "food": 520,
+            "wood": 380,
+            "stone": 220
+          }
+        },
+        "4": {
+          "unlocks": [
+            "imperial_guard",
+            "thunder_car",
+            "general_stage",
+            "military_camp",
+            "wall_stone_t3"
+          ],
+          "cost": {
+            "food": 820,
+            "wood": 640,
+            "stone": 420
+          }
+        }
+      },
+      "can_garrison": true,
+      "garrison_cap": 5
+    },
+    "paifang": {
+      "name": "牌楼",
+      "category": "governance",
+      "government_req": 1,
+      "hp": 400,
+      "size": [
+        2,
+        2
+      ],
+      "cost": {
+        "wood": 40
+      },
+      "build_time": 15,
+      "function": [
+        "storehouse_unlimited",
+        "recruit_peasant",
+        "dropoff"
+      ],
+      "note": "默认原始仓库，容量无限，可招募农夫"
+    },
+    "house": {
+      "name": "民居",
+      "category": "civilian",
+      "government_req": 1,
+      "hp": 250,
+      "size": [
+        2,
+        2
+      ],
+      "cost": {
+        "wood": 50
+      },
+      "build_time": 18,
+      "pop_provide": 6,
+      "can_garrison": true,
+      "garrison_cap": 2
+    },
+    "farm": {
+      "name": "农田",
+      "category": "economy",
+      "government_req": 1,
+      "hp": 200,
+      "size": [
+        2,
+        2
+      ],
+      "cost": {
+        "wood": 40
+      },
+      "build_time": 20,
+      "produces": {
+        "food": 4.0
+      },
+      "workers_max": 4,
+      "dropoff_to": "granary",
+      "season_modifier": {
+        "spring": 1.0,
+        "summer": 1.1,
+        "autumn": 1.5,
+        "winter": 0.4
+      }
+    },
+    "fishery": {
+      "name": "捕鱼屋",
+      "category": "economy",
+      "government_req": 1,
+      "hp": 220,
+      "size": [
+        2,
+        2
+      ],
+      "cost": {
+        "wood": 50
+      },
+      "build_time": 18,
+      "produces": {
+        "food": 3.5
+      },
+      "workers_max": 3,
+      "requires_water": true,
+      "season_modifier": {
+        "spring": 1.0,
+        "summer": 1.2,
+        "autumn": 1.0,
+        "winter": 0.6
+      }
+    },
+    "lumber": {
+      "name": "伐木场",
+      "category": "economy",
+      "government_req": 1,
+      "hp": 250,
+      "size": [
+        2,
+        2
+      ],
+      "cost": {
+        "wood": 30
+      },
+      "build_time": 18,
+      "produces": {
+        "wood": 0.0
+      },
+      "workers_max": 4,
+      "dropoff_to": "paifang",
+      "note": "农夫外出采集往返送回，就近建仓省吞吐"
+    },
+    "quarry": {
+      "name": "采石场",
+      "category": "economy",
+      "government_req": 1,
+      "hp": 250,
+      "size": [
+        2,
+        2
+      ],
+      "cost": {
+        "wood": 30
+      },
+      "build_time": 18,
+      "produces": {
+        "stone": 0.0
+      },
+      "workers_max": 4,
+      "dropoff_to": "paifang"
+    },
+    "workshop": {
+      "name": "作坊",
+      "category": "economy",
+      "government_req": 1,
+      "hp": 240,
+      "size": [
+        2,
+        2
+      ],
+      "cost": {
+        "wood": 40,
+        "stone": 20
+      },
+      "build_time": 20,
+      "produces": {
+        "gold": 3.0
+      },
+      "workers_max": 3,
+      "bonus": {
+        "gather_efficiency": 0.1
+      }
+    },
+    "barracks_sword": {
+      "name": "刀兵营",
+      "category": "military",
+      "government_req": 1,
+      "hp": 320,
+      "size": [
+        2,
+        3
+      ],
+      "cost": {
+        "wood": 80
+      },
+      "build_time": 25,
+      "trains": [
+        "sword"
+      ],
+      "rally_point": true,
+      "can_garrison": true,
+      "garrison_cap": 3
+    },
+    "barracks_spear": {
+      "name": "枪兵营",
+      "category": "military",
+      "government_req": 1,
+      "hp": 320,
+      "size": [
+        2,
+        3
+      ],
+      "cost": {
+        "wood": 80
+      },
+      "build_time": 25,
+      "trains": [
+        "spear"
+      ],
+      "rally_point": true,
+      "can_garrison": true,
+      "garrison_cap": 3
+    },
+    "barracks_archer": {
+      "name": "弓兵营",
+      "category": "military",
+      "government_req": 1,
+      "hp": 320,
+      "size": [
+        2,
+        3
+      ],
+      "cost": {
+        "wood": 80
+      },
+      "build_time": 25,
+      "trains": [
+        "archer"
+      ],
+      "rally_point": true,
+      "can_garrison": true,
+      "garrison_cap": 3
+    },
+    "training_camp": {
+      "name": "训练营",
+      "category": "military",
+      "government_req": 1,
+      "hp": 300,
+      "size": [
+        2,
+        2
+      ],
+      "cost": {
+        "wood": 60
+      },
+      "build_time": 20,
+      "function": [
+        "peasant_to_soldier"
+      ],
+      "note": "农夫→民兵→一级兵的唯一途径",
+      "can_garrison": true,
+      "garrison_cap": 4
+    },
+    "hanlinyuan": {
+      "name": "翰林院",
+      "category": "tech",
+      "government_req": 1,
+      "hp": 350,
+      "size": [
+        3,
+        2
+      ],
+      "cost": {
+        "wood": 100,
+        "gold": 30
+      },
+      "build_time": 30,
+      "function": [
+        "research_tech"
+      ],
+      "branches": [
+        "civilian",
+        "military",
+        "siege"
+      ],
+      "can_garrison": true,
+      "garrison_cap": 2
+    },
+    "granary": {
+      "name": "仓廪",
+      "category": "governance",
+      "government_req": 1,
+      "hp": 400,
+      "size": [
+        2,
+        2
+      ],
+      "cost": {
+        "wood": 50
+      },
+      "build_time": 15,
+      "function": [
+        "storehouse_unlimited",
+        "dropoff"
+      ],
+      "note": "容量无限，存粮不足→饥荒掉民心"
+    },
+    "siege_workshop": {
+      "name": "器械房",
+      "category": "military",
+      "government_req": 2,
+      "hp": 350,
+      "size": [
+        3,
+        3
+      ],
+      "cost": {
+        "wood": 120,
+        "stone": 40
+      },
+      "build_time": 30,
+      "trains": [
+        "ladder",
+        "supply_cart",
+        "ram",
+        "trebuchet",
+        "bed_bow",
+        "thunder_car"
+      ],
+      "rally_point": true,
+      "can_garrison": true,
+      "garrison_cap": 2
+    },
+    "inn": {
+      "name": "客栈",
+      "category": "governance",
+      "government_req": 2,
+      "hp": 280,
+      "size": [
+        2,
+        2
+      ],
+      "cost": {
+        "wood": 80,
+        "gold": 40
+      },
+      "build_time": 25,
+      "function": [
+        "recruit_general"
+      ],
+      "note": "招募在野武将（寻访/悬赏）",
+      "can_garrison": true,
+      "garrison_cap": 2
+    },
+    "stable": {
+      "name": "马厩",
+      "category": "military",
+      "government_req": 2,
+      "hp": 340,
+      "size": [
+        3,
+        2
+      ],
+      "cost": {
+        "wood": 100,
+        "gold": 30
+      },
+      "build_time": 28,
+      "trains": [
+        "horse",
+        "cavalry_light",
+        "cavalry_archer",
+        "cavalry_heavy",
+        "tiger_leopard"
+      ],
+      "rally_point": true,
+      "note": "养战马、出骑兵系；后期可直接生成重骑兵",
+      "can_garrison": true,
+      "garrison_cap": 3
+    },
+    "training_camp_t2": {
+      "name": "转职训练营",
+      "category": "military",
+      "government_req": 2,
+      "hp": 300,
+      "size": [
+        2,
+        2
+      ],
+      "cost": {
+        "wood": 80,
+        "gold": 40
+      },
+      "build_time": 22,
+      "function": [
+        "promote_unit"
+      ],
+      "note": "一级→二级兵转职（枪→金枪、弓→弩手、刀→斧头）",
+      "can_garrison": true,
+      "garrison_cap": 5
+    },
+    "arrow_tower": {
+      "name": "箭塔",
+      "category": "defense",
+      "government_req": 3,
+      "hp": 3000,
+      "size": [
+        1,
+        1
+      ],
+      "cost": {
+        "wood": 60,
+        "stone": 40
+      },
+      "build_time": 20,
+      "attack": 12,
+      "range": 4.5,
+      "atk_speed": 1.2,
+      "requires_worker": true,
+      "can_garrison": true,
+      "garrison_cap": 2
+    },
+    "crossbow_tower": {
+      "name": "弩台",
+      "category": "defense",
+      "government_req": 3,
+      "hp": 2600,
+      "size": [
+        1,
+        1
+      ],
+      "cost": {
+        "wood": 80,
+        "stone": 60
+      },
+      "build_time": 25,
+      "attack": 20,
+      "range": 5.0,
+      "atk_speed": 0.8,
+      "armor_pierce": 0.4,
+      "requires_worker": true,
+      "can_garrison": true,
+      "garrison_cap": 3
+    },
+    "elite_camp": {
+      "name": "精锐营",
+      "category": "military",
+      "government_req": 3,
+      "hp": 380,
+      "size": [
+        3,
+        2
+      ],
+      "cost": {
+        "wood": 120,
+        "stone": 60,
+        "gold": 50
+      },
+      "build_time": 32,
+      "trains": [
+        "heavy_blade",
+        "iron_spear",
+        "heavy_crossbow",
+        "tiger_guard",
+        "baier_soldier",
+        "qingzhou_soldier",
+        "danyang_soldier",
+        "zhuge_nu",
+        "imperial_blade",
+        "imperial_spear",
+        "imperial_archer",
+        "imperial_cavalry_archer"
+      ],
+      "rally_point": true,
+      "can_garrison": true,
+      "garrison_cap": 4
+    },
+    "general_stage": {
+      "name": "点将台",
+      "category": "governance",
+      "government_req": 4,
+      "hp": 400,
+      "size": [
+        2,
+        2
+      ],
+      "cost": {
+        "stone": 100,
+        "gold": 80
+      },
+      "build_time": 30,
+      "function": [
+        "promote_veteran",
+        "unlock_special_skill"
+      ],
+      "note": "5级以上士兵可提拔为武将（带累计加成）；普通武将可领悟特殊技能",
+      "can_garrison": true,
+      "garrison_cap": 3
+    },
+    "military_camp": {
+      "name": "军营",
+      "category": "military",
+      "government_req": 4,
+      "hp": 500,
+      "size": [
+        3,
+        3
+      ],
+      "cost": {
+        "wood": 150,
+        "stone": 80
+      },
+      "build_time": 35,
+      "garrison_capacity": 80,
+      "function": [
+        "garrison",
+        "direct_recruit"
+      ],
+      "note": "大容量屯兵；后期可直接招兵，免去农夫训练链路",
+      "can_garrison": true,
+      "garrison_cap": 6
+    },
+    "wall_inner": {
+      "name": "内城防御城墙",
+      "category": "defense",
+      "government_req": 1,
+      "hp": 12000,
+      "size": [
+        1,
+        1
+      ],
+      "cost": {},
+      "build_time": 0,
+      "note": "系统原版自带，玩家不可主动拆除，守护核心区",
+      "can_garrison": true,
+      "garrison_cap": 1
+    },
+    "wall_wood": {
+      "name": "外城·木栅",
+      "category": "defense",
+      "government_req": 1,
+      "hp": 1200,
+      "size": [
+        1,
+        1
+      ],
+      "cost": {
+        "wood": 60
+      },
+      "build_time": 20,
+      "destructible": true,
+      "can_garrison": true,
+      "garrison_cap": 1
+    },
+    "wall_rammed": {
+      "name": "外城·夯土墙",
+      "category": "defense",
+      "government_req": 2,
+      "hp": 2800,
+      "size": [
+        1,
+        1
+      ],
+      "cost": {
+        "wood": 60,
+        "stone": 60
+      },
+      "build_time": 35,
+      "destructible": true,
+      "can_garrison": true,
+      "garrison_cap": 1
+    },
+    "wall_stone": {
+      "name": "石城墙",
+      "category": "defense",
+      "government_req": 3,
+      "hp": 6500,
+      "size": [
+        1,
+        1
+      ],
+      "cost": {
+        "stone": 160,
+        "wood": 40
+      },
+      "build_time": 55,
+      "destructible": true,
+      "note": "血厚难破，仍可被器械/破甲强攻",
+      "can_garrison": true,
+      "garrison_cap": 2
+    },
+    "gate": {
+      "name": "城门",
+      "category": "defense",
+      "government_req": 1,
+      "hp_mult": 1.4,
+      "size": [
+        1,
+        2
+      ],
+      "cost": {
+        "wood": 80,
+        "stone": 40
+      },
+      "build_time": 25,
+      "note": "唯一出入口，被破可步行通过缺口",
+      "can_garrison": true,
+      "garrison_cap": 3
+    }
+  }
+}
