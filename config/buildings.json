@@ -1,4 +1,4 @@
-{
+﻿{
   "_meta": {
     "version": "2.2",
     "note": "仓库/仓廪容量无限，核心约束为吞吐时间；牌楼为默认原始仓库兼招农"
@@ -37,7 +37,8 @@
             "training_camp",
             "hanlinyuan",
             "granary",
-            "wall_inner"
+            "wall_inner",
+            "shipyard"
           ]
         },
         "2": {
@@ -663,6 +664,27 @@
       "note": "唯一出入口，被破可步行通过缺口",
       "can_garrison": true,
       "garrison_cap": 3
+    },
+    "shipyard": {
+      "name": "造船厂",
+      "category": "military",
+      "government_req": 1,
+      "hp": 400,
+      "size": [
+        3,
+        2
+      ],
+      "cost": {
+        "wood": 150,
+        "gold": 50
+      },
+      "build_time": 30,
+      "trains": [
+        "transport_ship",
+        "warship"
+      ],
+      "rally_point": true,
+      "can_garrison": false
     }
   }
 }

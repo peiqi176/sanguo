@@ -17,6 +17,8 @@ func _ready() -> void:
 	GameManager.pathfinder = pathfinder
 	GameManager.map_size = grid.map_size
 	_setup_terrain()
+	_spawn_water()
+	_spawn_decorations()
 	_spawn_initial_forces()
 	_spawn_resource_nodes()
 	_spawn_villages()
@@ -41,24 +43,44 @@ func _setup_terrain() -> void:
 	plane_mesh.subdivide_depth = 42
 	_terrain.mesh = plane_mesh
 	var mat: StandardMaterial3D = StandardMaterial3D.new()
-	mat.albedo_color = Color(0.45, 0.55, 0.30)
-	mat.roughness = 0.8
+	# 傲世三国风格的土褐色调草地
+	mat.albedo_color = Color(0.42, 0.48, 0.28)
+	mat.roughness = 0.95
 	_terrain.material_override = mat
 	_terrain.rotation.x = deg_to_rad(-90)
 	add_child(_terrain)
 	# 光照
 	var light: DirectionalLight3D = DirectionalLight3D.new()
-	light.rotation = Vector3(deg_to_rad(-45), deg_to_rad(30), 0)
-	light.light_energy = 1.5
+	light.rotation = Vector3(deg_to_rad(-50), deg_to_rad(35), 0)
+	light.light_energy = 1.8
+	light.light_color = Color(1.0, 0.96, 0.88)
+	light.shadow_enabled = true
+	light.light_angular_distance = 0.5
+	light.shadow_blur = 1.5
+	light.shadow_normal_bias = 0.3
+	light.shadow_bias = 0.05
+	light.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_4_SPLITS
 	add_child(light)
 	# 环境光
 	var env: WorldEnvironment = WorldEnvironment.new()
 	var env_resource: Environment = Environment.new()
 	env_resource.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env_resource.ambient_light_color = Color(0.8, 0.8, 0.7)
-	env_resource.ambient_light_energy = 0.8
+	env_resource.ambient_light_color = Color(0.75, 0.78, 0.65)
+	env_resource.ambient_light_energy = 1.0
 	env_resource.background_mode = Environment.BG_COLOR
-	env_resource.background_color = Color(0.3, 0.35, 0.25)
+	env_resource.background_color = Color(0.50, 0.65, 0.82)
+	# 雾效
+	env_resource.fog_enabled = true
+	env_resource.fog_light_color = Color(0.72, 0.76, 0.72)
+	env_resource.fog_density = 0.006
+	env_resource.fog_height = 0.0
+	env_resource.fog_height_density = 0.01
+	# 辉光
+	env_resource.glow_enabled = true
+	env_resource.glow_intensity = 0.6
+	env_resource.glow_bloom = 0.3
+	env_resource.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
+	# 色调映射
 	env.environment = env_resource
 	add_child(env)
 
@@ -130,6 +152,74 @@ func _spawn_general(faction_id: String, pos: Vector3) -> void:
 		g.unit_id = "general_" + general_ids[faction_id]
 		add_child(g)
 		g.global_position = pos
+
+func _spawn_water() -> void:
+	"""生成河流和湖泊"""
+	var water_script: GDScript = load("res://scripts/world/Water.gd")
+	if not water_script:
+		return
+	# 横向河流
+	var river = water_script.new()
+	river.mesh = river.mesh  # placeholder
+	add_child(river)
+	river.global_position = Vector3(40, 0.1, 42)
+	river.scale = Vector3(4.2, 1, 0.8)
+	# 湖泊
+	var lake = water_script.new()
+	add_child(lake)
+	lake.global_position = Vector3(15, 0.1, 65)
+	lake.scale = Vector3(1.8, 1, 1.5)
+
+func _spawn_decorations() -> void:
+	"""生成树木、佛像、岩石、灯笼等装饰"""
+	var tree_script: GDScript = load("res://scripts/world/Tree.gd")
+	var deco_script: GDScript = load("res://scripts/world/Decoration.gd")
+	if not tree_script or not deco_script:
+		return
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 424242
+	# 散布树木（约80棵）
+	for i in range(80):
+		var gx: int = rng.randi_range(1, 82)
+		var gz: int = rng.randi_range(1, 82)
+		# 避开水域
+		if abs(gz - 42) < 6 and gx > 10 and gx < 74:
+			continue
+		if abs(gx - 15) < 8 and abs(gz - 65) < 8:
+			continue
+		if not grid.is_placeable(Vector2i(gx, gz), Vector2i(1, 1)):
+			continue
+		var tree = tree_script.new()
+		var t: int = rng.randi_range(0, 3)
+		tree.tree_type = t
+		add_child(tree)
+		tree.global_position = grid.grid_to_world(Vector2i(gx, gz))
+		tree.scale *= randf_range(0.8, 1.3)
+	# 佛像（3座）
+	var buddha_positions: Array = [Vector2i(30, 30), Vector2i(60, 60), Vector2i(20, 70)]
+	for bp in buddha_positions:
+		if grid.is_placeable(bp, Vector2i(2, 2)):
+			var b = deco_script.new()
+			b.deco_type = 0  # BUDDHA
+			add_child(b)
+			b.global_position = grid.grid_to_world(bp)
+	# 岩石散布
+	for i in range(30):
+		var rx: int = rng.randi_range(1, 82)
+		var rz: int = rng.randi_range(1, 82)
+		if not grid.is_placeable(Vector2i(rx, rz), Vector2i(1, 1)):
+			continue
+		var rock = deco_script.new()
+		rock.deco_type = 1  # ROCK
+		add_child(rock)
+		rock.global_position = grid.grid_to_world(Vector2i(rx, rz))
+	# 灯笼（村庄附近）
+	var lantern_positions: Array = [Vector2i(39, 11), Vector2i(41, 11), Vector2i(9, 39), Vector2i(11, 39)]
+	for lp in lantern_positions:
+		var lantern = deco_script.new()
+		lantern.deco_type = 2  # LANTERN
+		add_child(lantern)
+		lantern.global_position = grid.grid_to_world(lp)
 
 func _spawn_resource_nodes() -> void:
 	# 散布资源点

@@ -135,7 +135,7 @@ func _screen_to_world(screen_pos: Vector2) -> Vector3:
 
 func _is_click_on_ui(screen_pos: Vector2) -> bool:
 	# 简化：检查点击是否在 Control 节点上
-	var control: Control = get_tree().root.gui_get_control_at(screen_pos)
+	var control: Control = get_viewport().gui_get_control_at(screen_pos)
 	return control != null and control.is_inside_tree()
 
 func issue_command(target_pos: Vector3, target_entity = null, queue: bool = false) -> void:

@@ -9,6 +9,8 @@ var _topright: HBoxContainer
 var _cmd_panel: PanelContainer
 var _cmd_portrait: Panel
 var _cmd_name: Label
+var _cmd_hp_bar: ProgressBar = null
+var _cmd_mp_bar: ProgressBar = null
 var _cmd_stats: GridContainer
 var _cmd_btns: GridContainer
 var _minimap: Control
@@ -157,6 +159,50 @@ func _build_ui() -> void:
 	_cmd_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_cmd_name.add_theme_color_override("font_color", Color(0.96, 0.86, 0.63, 1.0))
 	pv_vbox.add_child(_cmd_name)
+	# HP 条
+	_cmd_hp_bar = ProgressBar.new()
+	_cmd_hp_bar.custom_minimum_size = Vector2(90, 8)
+	_cmd_hp_bar.min_value = 0
+	_cmd_hp_bar.max_value = 100
+	_cmd_hp_bar.value = 100
+	_cmd_hp_bar.show_percentage = false
+	var hp_style := StyleBoxFlat.new()
+	hp_style.bg_color = Color(0.2, 0.05, 0.05, 1.0)
+	hp_style.corner_radius_top_left = 2
+	hp_style.corner_radius_top_right = 2
+	hp_style.corner_radius_bottom_left = 2
+	hp_style.corner_radius_bottom_right = 2
+	_cmd_hp_bar.add_theme_stylebox_override("background", hp_style)
+	var hp_fill := StyleBoxFlat.new()
+	hp_fill.bg_color = Color(0.85, 0.15, 0.15, 1.0)
+	hp_fill.corner_radius_top_left = 2
+	hp_fill.corner_radius_top_right = 2
+	hp_fill.corner_radius_bottom_left = 2
+	hp_fill.corner_radius_bottom_right = 2
+	_cmd_hp_bar.add_theme_stylebox_override("fill", hp_fill)
+	pv_vbox.add_child(_cmd_hp_bar)
+	# MP 条
+	_cmd_mp_bar = ProgressBar.new()
+	_cmd_mp_bar.custom_minimum_size = Vector2(90, 6)
+	_cmd_mp_bar.min_value = 0
+	_cmd_mp_bar.max_value = 100
+	_cmd_mp_bar.value = 100
+	_cmd_mp_bar.show_percentage = false
+	var mp_style := StyleBoxFlat.new()
+	mp_style.bg_color = Color(0.05, 0.05, 0.2, 1.0)
+	mp_style.corner_radius_top_left = 2
+	mp_style.corner_radius_top_right = 2
+	mp_style.corner_radius_bottom_left = 2
+	mp_style.corner_radius_bottom_right = 2
+	_cmd_mp_bar.add_theme_stylebox_override("background", mp_style)
+	var mp_fill := StyleBoxFlat.new()
+	mp_fill.bg_color = Color(0.2, 0.4, 0.9, 1.0)
+	mp_fill.corner_radius_top_left = 2
+	mp_fill.corner_radius_top_right = 2
+	mp_fill.corner_radius_bottom_left = 2
+	mp_fill.corner_radius_bottom_right = 2
+	_cmd_mp_bar.add_theme_stylebox_override("fill", mp_fill)
+	pv_vbox.add_child(_cmd_mp_bar)
 
 	# 中间属性区
 	_cmd_stats = GridContainer.new()
@@ -867,6 +913,11 @@ func _on_units_selected(units: Array) -> void:
 
 func _on_unit_deselected() -> void:
 	_cmd_name.text = "未选中"
+	if _cmd_hp_bar:
+		_cmd_hp_bar.value = 0
+	if _cmd_mp_bar:
+		_cmd_mp_bar.value = 0
+		_cmd_mp_bar.visible = false
 	_clear_stats()
 	_clear_cmd_btns()
 
@@ -908,6 +959,16 @@ func _show_unit_info(unit: Node) -> void:
 		return
 	var udef: Dictionary = DataLoader.get_unit_def(unit.unit_id)
 	_cmd_name.text = udef.get("name", unit.unit_id)
+	# HP/MP 条
+	if _cmd_hp_bar:
+		var hp_pct: float = unit.hp / unit.max_hp if unit.max_hp > 0 else 1.0
+		_cmd_hp_bar.value = hp_pct * 100.0
+	if _cmd_mp_bar and "mp" in unit and "max_mp" in unit:
+		var mp_pct: float = unit.mp / unit.max_mp if unit.max_mp > 0 else 1.0
+		_cmd_mp_bar.value = mp_pct * 100.0
+		_cmd_mp_bar.visible = true
+	else:
+		_cmd_mp_bar.visible = false
 	_set_stat(0, "攻", "%.0f" % unit.atk)
 	_set_stat(1, "防", "%.0f" % unit.defense)
 	_set_stat(2, "攻速", "%.1f" % unit.atk_speed)
@@ -1062,6 +1123,22 @@ func _on_minimap_draw() -> void:
 		var px: Vector2 = Vector2(float(gp.x) * scale.x, float(gp.y) * scale.y)
 		var fac_color: Color = _get_faction_color(u.faction)
 		_minimap_canvas.draw_circle(px, 1.5, fac_color)
+	# 绘制相机视口框
+	var cam: Camera3D = get_viewport().get_camera_3d()
+	if cam and GameManager.grid:
+		var viewport_size: Vector2 = get_viewport().get_visible_rect().size
+		var cam_pos: Vector3 = cam.global_position
+		var half_w: float = viewport_size.x * 0.012
+		var half_h: float = viewport_size.y * 0.012
+		var left_w: Vector3 = cam_pos - cam.global_transform.basis.x * half_w
+		var right_w: Vector3 = cam_pos + cam.global_transform.basis.x * half_w
+		var tl_world: Vector3 = left_w + cam.global_transform.basis.z * half_h
+		var br_world: Vector3 = right_w - cam.global_transform.basis.z * half_h
+		var tl_g: Vector2i = GameManager.grid.world_to_grid(tl_world)
+		var br_g: Vector2i = GameManager.grid.world_to_grid(br_world)
+		var tl_px: Vector2 = Vector2(float(tl_g.x) * scale.x, float(tl_g.y) * scale.y)
+		var br_px: Vector2 = Vector2(float(br_g.x) * scale.x, float(br_g.y) * scale.y)
+		_minimap_canvas.draw_rect(Rect2(tl_px, br_px - tl_px), Color(1.0, 1.0, 1.0, 0.0), false, 1.5)
 
 func _get_faction_color(faction_id: String) -> Color:
 	match faction_id:

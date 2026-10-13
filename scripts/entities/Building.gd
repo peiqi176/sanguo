@@ -48,6 +48,39 @@ func _init_from_def() -> void:
 	garrison_cap = def.get("garrison_cap", 0)
 
 func _create_sprite() -> void:
+	# 3D底座平台（增加立体感）
+	var platform: MeshInstance3D = MeshInstance3D.new()
+	var plat_mesh: BoxMesh = BoxMesh.new()
+	var sw: float = float(size.x) * 2.0 + 0.3
+	var sd: float = float(size.y) * 2.0 + 0.3
+	plat_mesh.size = Vector3(sw, 0.3, sd)
+	platform.mesh = plat_mesh
+	var plat_mat: StandardMaterial3D = StandardMaterial3D.new()
+	var cat: String = def.get("category", "civilian")
+	if cat == "military":
+		plat_mat.albedo_color = Color(0.45, 0.40, 0.35)
+	elif cat == "governance":
+		plat_mat.albedo_color = Color(0.55, 0.48, 0.35)
+	elif cat == "resource":
+		plat_mat.albedo_color = Color(0.40, 0.35, 0.25)
+	else:
+		plat_mat.albedo_color = Color(0.42, 0.36, 0.28)
+	plat_mat.roughness = 0.9
+	platform.material_override = plat_mat
+	platform.position.y = 0.15
+	add_child(platform)
+	# 台阶边缘
+	var edge: MeshInstance3D = MeshInstance3D.new()
+	var edge_mesh: BoxMesh = BoxMesh.new()
+	edge_mesh.size = Vector3(sw + 0.15, 0.1, sd + 0.15)
+	edge.mesh = edge_mesh
+	var edge_mat: StandardMaterial3D = StandardMaterial3D.new()
+	edge_mat.albedo_color = Color(0.30, 0.26, 0.20)
+	edge_mat.roughness = 0.95
+	edge.material_override = edge_mat
+	edge.position.y = 0.05
+	add_child(edge)
+
 	_sprite = Sprite3D.new()
 	_sprite.billboard = BaseMaterial3D.BILLBOARD_DISABLED
 	_sprite.shaded = false
@@ -59,7 +92,7 @@ func _create_sprite() -> void:
 			_sprite.texture = tex
 		var s: float = float(adef.get("scale", 1.5))
 		_sprite.scale = Vector3(s, s, s)
-		_sprite.position.y = float(adef.get("offset_y", 1.0))
+		_sprite.position.y = float(adef.get("offset_y", 1.0)) + 0.3
 	add_child(_sprite)
 
 func _create_selection_ring() -> void:

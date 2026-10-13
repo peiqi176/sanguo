@@ -47,6 +47,9 @@ var _selection_ring: MeshInstance3D = null
 var _hp_bar: Sprite3D = null
 var _pathfinder: Pathfinder = null
 var _sprite: Sprite3D = null
+var _sprite_base_pos: Vector3 = Vector3.ZERO
+var _sprite_base_scale: Vector3 = Vector3.ONE
+var _anim_time: float = 0.0
 
 func _ready() -> void:
 	def = DataLoader.get_unit_def(unit_id)
@@ -67,11 +70,26 @@ func _init_from_def() -> void:
 	morale = def.get("morale", 60)
 
 func _create_sprite() -> void:
+	# 船只单位使用3D模型
+	if def.has("is_naval") and def["is_naval"]:
+		var ship_script: GDScript = load("res://scripts/world/Ship.gd") as GDScript
+		var ship: Node3D = ship_script.new()
+		ship.position.y = 0.0
+		if unit_id == "warship":
+			ship.set_ship_type(1)
+		else:
+			ship.set_ship_type(0)
+		add_child(ship)
+		_sprite = Sprite3D.new()
+		_sprite.visible = false
+		add_child(_sprite)
+		_sprite_base_pos = Vector3.ZERO
+		_sprite_base_scale = Vector3.ONE
+		return
 	_sprite = Sprite3D.new()
 	_sprite.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	_sprite.shaded = false
 	_sprite.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	# Determine category and id
 	var cat: String = "units"
 	var eid: String = unit_id
 	if is_general:
@@ -86,7 +104,12 @@ func _create_sprite() -> void:
 		var s: float = float(adef.get("scale", 1.0))
 		_sprite.scale = Vector3(s, s, s)
 		_sprite.position.y = float(adef.get("offset_y", 0.8))
+		_sprite_base_pos = _sprite.position
+		_sprite_base_scale = _sprite.scale
 	add_child(_sprite)
+	# 将军马匹
+	if is_general:
+		_add_horse()
 
 func _create_selection_ring() -> void:
 	_selection_ring = MeshInstance3D.new()
@@ -132,6 +155,107 @@ func _process(delta: float) -> void:
 			_process_returning(delta)
 		State.REPAIRING:
 			_process_repairing(delta)
+	_animate_sprite(delta)
+
+func _add_horse() -> void:
+	var horse: Node3D = Node3D.new()
+	var body: MeshInstance3D = MeshInstance3D.new()
+	var body_mesh: CylinderMesh = CylinderMesh.new()
+	body_mesh.top_radius = 0.35
+	body_mesh.bottom_radius = 0.45
+	body_mesh.height = 1.2
+	body_mesh.radial_segments = 8
+	body.mesh = body_mesh
+	var body_mat: StandardMaterial3D = StandardMaterial3D.new()
+	body_mat.albedo_color = Color(0.35, 0.22, 0.12)
+	body_mat.roughness = 0.6
+	body.material_override = body_mat
+	body.rotation.y = PI / 2.0
+	body.position.y = 0.6
+	horse.add_child(body)
+	for i in range(4):
+		var leg: MeshInstance3D = MeshInstance3D.new()
+		var leg_mesh: CylinderMesh = CylinderMesh.new()
+		leg_mesh.top_radius = 0.08
+		leg_mesh.bottom_radius = 0.08
+		leg_mesh.height = 0.7
+		leg.mesh = leg_mesh
+		var leg_mat: StandardMaterial3D = StandardMaterial3D.new()
+		leg_mat.albedo_color = Color(0.25, 0.15, 0.08)
+		leg_mat.roughness = 0.7
+		leg.material_override = leg_mat
+		var lx: float = 0.35 if i < 2 else -0.35
+		var lz: float = 0.4 if i % 2 == 0 else -0.4
+		leg.position = Vector3(lx, 0.35, lz)
+		horse.add_child(leg)
+	var head: MeshInstance3D = MeshInstance3D.new()
+	var head_mesh: CylinderMesh = CylinderMesh.new()
+	head_mesh.top_radius = 0.15
+	head_mesh.bottom_radius = 0.25
+	head_mesh.height = 0.5
+	head_mesh.radial_segments = 6
+	head.mesh = head_mesh
+	var head_mat: StandardMaterial3D = StandardMaterial3D.new()
+	head_mat.albedo_color = Color(0.30, 0.18, 0.10)
+	head_mat.roughness = 0.6
+	head.material_override = head_mat
+	head.position = Vector3(0, 1.0, 0.7)
+	head.rotation.x = -0.3
+	horse.add_child(head)
+	add_child(horse)
+
+func _animate_sprite(delta: float) -> void:
+	if _sprite == null or not is_instance_valid(_sprite):
+		return
+	_anim_time += delta
+	var t: float = _anim_time
+	match state:
+		State.IDLE:
+			var breath: float = sin(t * 2.0) * 0.03
+			_sprite.position = _sprite_base_pos + Vector3(0, breath, 0)
+			_sprite.scale = _sprite_base_scale
+			_sprite.rotation.z = 0.0
+		State.MOVING:
+			var walk: float = abs(sin(t * 8.0)) * 0.12
+			_sprite.position = _sprite_base_pos + Vector3(0, walk, 0)
+			_sprite.scale = _sprite_base_scale * Vector3(1.0, 1.0 - walk * 0.3, 1.0)
+			_sprite.rotation.z = sin(t * 8.0) * 0.05
+		State.ATTACKING:
+			var atk: float = sin(t * atk_speed * 6.0)
+			_sprite.position = _sprite_base_pos + Vector3(0, abs(atk) * 0.05, atk * 0.15)
+			_sprite.scale = _sprite_base_scale * Vector3(1.0 + atk * 0.05, 1.0, 1.0)
+			_sprite.rotation.z = atk * 0.1
+		State.GATHERING:
+			var rtype: String = "wood"
+			if gather_target and gather_target.has("resource_type"):
+				rtype = gather_target.get("resource_type")
+			if rtype == "wood":
+				var chop: float = sin(t * 6.0)
+				_sprite.position = _sprite_base_pos + Vector3(chop * 0.1, abs(chop) * 0.04, 0)
+				_sprite.rotation.z = chop * 0.25
+			elif rtype == "stone":
+				var mine: float = sin(t * 8.0)
+				_sprite.position = _sprite_base_pos + Vector3(0, abs(mine) * 0.06, mine * 0.1)
+				_sprite.rotation.z = mine * 0.15
+			else:
+				var forage: float = abs(sin(t * 3.0))
+				_sprite.position = _sprite_base_pos + Vector3(0, -forage * 0.15, 0)
+				_sprite.scale = _sprite_base_scale * Vector3(1.0, 1.0 - forage * 0.2, 1.0)
+				_sprite.rotation.z = forage * 0.1
+		State.RETURNING:
+			var carry: float = abs(sin(t * 6.0)) * 0.08
+			_sprite.position = _sprite_base_pos + Vector3(0, carry - 0.05, 0)
+			_sprite.scale = _sprite_base_scale * Vector3(1.0, 0.95, 1.0)
+			_sprite.rotation.z = sin(t * 6.0) * 0.03
+		State.REPAIRING:
+			var hammer: float = sin(t * 10.0)
+			_sprite.position = _sprite_base_pos + Vector3(hammer * 0.08, abs(hammer) * 0.03, 0)
+			_sprite.rotation.z = hammer * 0.2
+		_:
+			_sprite.position = _sprite_base_pos
+			_sprite.scale = _sprite_base_scale
+			_sprite.rotation.z = 0.0
+	_sprite.visible = true
 
 func _process_idle() -> void:
 	# 自动攻击附近敌人
@@ -269,7 +393,11 @@ func _check_level_up() -> void:
 
 # ==================== 指令 ====================
 
-func command_move(target: Vector3) -> void:
+func command_move(target: Vector3, queue: bool = false) -> void:
+	if queue:
+		command_queue.append({"type": "move", "pos": target})
+		return
+	command_queue.clear()
 	move_target = target
 	attack_target = null
 	var start_grid: Vector2i = GameManager.grid.world_to_grid(global_position)
@@ -278,11 +406,23 @@ func command_move(target: Vector3) -> void:
 	path_index = 0
 	state = State.MOVING
 
-func command_attack(target: Node) -> void:
+func command_attack(target: Node, queue: bool = false) -> void:
+	if not is_instance_valid(target):
+		return
+	if queue:
+		command_queue.append({"type": "attack", "target": target})
+		return
+	command_queue.clear()
 	attack_target = target
 	state = State.ATTACKING
 
-func command_gather(node: Node) -> void:
+func command_gather(node: Node, queue: bool = false) -> void:
+	if unit_id != "peasant":
+		return
+	if queue:
+		command_queue.append({"type": "gather", "target": node})
+		return
+	command_queue.clear()
 	gather_target = node
 	state = State.GATHERING
 
