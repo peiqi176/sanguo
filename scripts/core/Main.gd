@@ -198,11 +198,12 @@ func _process(_delta: float) -> void:
 		_update_build_ghost()
 
 func _unhandled_input(event: InputEvent) -> void:
-	# 右键下达指令
+	# 右键下达指令 (Shift+右键 = 加入指令队列)
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		if _build_mode != "":
 			_cancel_build_mode()
 			return
+		var queue: bool = event.shift_pressed
 		var world_pos: Vector3 = _screen_to_world(event.position)
 		if world_pos != Vector3.INF:
 			var target: Node = _get_entity_at(world_pos)
@@ -210,8 +211,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			if target and target is ResourceNode:
 				for u in selection.get_selected_units():
 					if u.unit_id == "peasant":
-						u.command_gather(target)
-				EventBus.float_text.emit("采集", world_pos + Vector3(0, 2, 0), Color.YELLOW)
+						u.command_gather(target, queue)
+				EventBus.float_text.emit("采集" + (" (排队)" if queue else ""), world_pos + Vector3(0, 2, 0), Color.YELLOW)
 			# 右键受损友方建筑 + 农夫 -> 修理
 			elif target and target is Building and target.get_faction() == GameManager.player_faction and target.is_damaged():
 				for u in selection.get_selected_units():
@@ -224,12 +225,12 @@ func _unhandled_input(event: InputEvent) -> void:
 					u.command_garrison(target)
 			# 右键村庄/野马 -> 移动占领/捕获
 			elif target and (target is Village or target is WildHorse):
-				selection.issue_command(target.global_position)
+				selection.issue_command(target.global_position, null, queue)
 			# 右键敌方单位 -> 攻击
 			elif target and target.has_method("get_faction") and target.get_faction() != GameManager.player_faction:
-				selection.issue_command(world_pos, target)
+				selection.issue_command(world_pos, target, queue)
 			else:
-				selection.issue_command(world_pos)
+				selection.issue_command(world_pos, null, queue)
 		get_viewport().set_input_as_handled()
 	
 	# 建造模式下左键放置
@@ -243,6 +244,37 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
 		if _build_mode != "":
 			_cancel_build_mode()
+
+	# 编队快捷键: Ctrl+1~9 保存编队, 1~9 选择编队, 双击数字居中视角
+	if event is InputEventKey and event.pressed and not event.echo:
+		var key: int = event.keycode
+		var group_idx: int = -1
+		if key >= KEY_1 and key <= KEY_9:
+			group_idx = key - KEY_1
+		elif key == KEY_0:
+			group_idx = 9
+		if group_idx >= 0:
+			var ctrl: bool = event.ctrl_pressed
+			if ctrl:
+				selection.save_group(group_idx)
+			else:
+				# 双击检测
+				var now: float = Time.get_ticks_msec() / 1000.0
+				var double_tap: bool = (group_idx == selection._last_group_key and (now - selection._last_group_time) < 0.4)
+				selection._last_group_key = group_idx
+				selection._last_group_time = now
+				selection.select_group(group_idx, double_tap)
+			get_viewport().set_input_as_handled()
+
+	# S键停止 (清空指令队列)
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_S:
+		for u in selection.get_selected_units():
+			u.command_queue.clear()
+			u.state = u.State.IDLE
+			u.attack_target = null
+			u.gather_target = null
+			u.repair_target = null
+		EventBus.float_text.emit("停止", Vector3.ZERO, Color.WHITE)
 
 func start_build_mode(building_id: String) -> void:
 	_build_mode = building_id

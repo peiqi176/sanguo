@@ -9,9 +9,14 @@ var _is_box_selecting: bool = false
 var _box_start: Vector2 = Vector2.ZERO
 var _box_end: Vector2 = Vector2.ZERO
 var _selection_box: ColorRect = null
+var control_groups: Array = []  # 10个编队 (0-9)
+var _last_group_key: int = -1
+var _last_group_time: float = 0.0
 
 func _ready() -> void:
 	_create_selection_box()
+	for i in range(10):
+		control_groups.append([])
 
 func _create_selection_box() -> void:
 	_selection_box = ColorRect.new()
@@ -133,20 +138,57 @@ func _is_click_on_ui(screen_pos: Vector2) -> bool:
 	var control: Control = get_tree().root.gui_get_control_at(screen_pos)
 	return control != null and control.is_inside_tree()
 
-func issue_command(target_pos: Vector3, target_entity = null) -> void:
+func issue_command(target_pos: Vector3, target_entity = null, queue: bool = false) -> void:
 	if selected_units.size() == 0:
 		return
 	for unit in selected_units:
 		if target_entity:
 			if target_entity.get_faction() != GameManager.player_faction:
-				unit.command_attack(target_entity)
+				unit.command_attack(target_entity, queue)
 			else:
-				unit.command_move(target_pos)
+				unit.command_move(target_pos, queue)
 		else:
-			unit.command_move(target_pos)
+			unit.command_move(target_pos, queue)
 
 func get_selected_units() -> Array:
 	return selected_units
+
+func save_group(index: int) -> void:
+	"""保存当前选中单位到指定编队"""
+	if index < 0 or index > 9:
+		return
+	control_groups[index] = selected_units.duplicate()
+	if selected_units.size() > 0:
+		EventBus.float_text.emit("编队 " + str(index + 1), selected_units[0].global_position + Vector3(0, 3, 0), Color.CYAN)
+
+func select_group(index: int, double_tap: bool = false) -> void:
+	"""选择指定编队，双击则居中视角"""
+	if index < 0 or index > 9:
+		return
+	var group: Array = control_groups[index]
+	if group.size() == 0:
+		return
+	var valid: Array = []
+	for u in group:
+		if is_instance_valid(u):
+			valid.append(u)
+	control_groups[index] = valid
+	if valid.size() == 0:
+		return
+	clear_selection()
+	selected_units = valid
+	for u in valid:
+		if is_instance_valid(u):
+			u.set_selected(true)
+	EventBus.units_selected.emit(selected_units)
+	if double_tap and valid.size() > 0:
+		var center: Vector3 = Vector3.ZERO
+		for u in valid:
+			center += u.global_position
+		center /= valid.size()
+		var cam: Node3D = get_tree().get_first_node_in_group("camera_controller")
+		if cam and cam.has_method("focus_on"):
+			cam.focus_on(center)
 
 
 

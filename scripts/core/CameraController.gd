@@ -19,6 +19,7 @@ var _is_dragging: bool = false
 var _last_mouse_pos: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
+	add_to_group("camera_controller")
 	_camera = $Camera3D
 	_camera.current = true
 	_update_camera()

@@ -38,6 +38,7 @@ var attack_target: Node = null
 var gather_target: Node = null
 var repair_target: Node = null
 var garrison_building: Node = null
+var command_queue: Array = []  # 指令队列 (Shift+点击排队)
 var path: Array = []
 var path_index: int = 0
 
