@@ -38,7 +38,9 @@
     "food":   { "name": "粟米", "icon": "🍚", "color": "#e8c870" },
     "wood":   { "name": "木材", "icon": "🪵", "color": "#a0784a" },
     "stone":  { "name": "石料", "icon": "🪨", "color": "#b0a898" },
-    "gold":   { "name": "铜钱", "icon": "🥇", "color": "#e8b840" }
+    "gold":   { "name": "铜钱", "icon": "🥇", "color": "#e8b840" },
+    "bun":    { "name": "馒头", "icon": "🥟", "color": "#f0e0c0" },
+    "wine":   { "name": "美酒", "icon": "🍶", "color": "#d08080" }
   }
 }
 

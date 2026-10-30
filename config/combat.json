@@ -1,37 +1,77 @@
-﻿{
-  "_meta": { "note": "微克制系数+30%~+50%；暴击伤害=普攻×150%；士气100时+30%全属性" },
+{
+  "_meta": { "version": "2.1", "note": "2026-10-27 对标傲世定稿：士气影响攻击(不耗酒)、酒=回血、包子=体力、攻击为浮动区间、弓兵弹道与命中" },
   "counter": {
-    "spear_vs_cavalry": 0.45,
-    "cavalry_vs_ranged": 0.40,
-    "ranged_vs_spear": 0.40,
-    "sword_vs_spear": 0.35,
-    "axeman_vs_heavy": 0.40,
+    "sword_vs_spear": 0.175,
+    "spear_vs_cavalry": 0.225,
+    "archer_vs_spear": 0.20,
+    "cavalry_vs_ranged": 0.20,
+    "axeman_vs_heavy": 0.20,
     "siege_vs_structure": 1.0
   },
   "crit": {
-    "base_chance": 0.05,
-    "general_chance": 0.18,
-    "damage_mult": 1.5
+    "soldier_chance": 0.0,
+    "general_base_chance_mult": 0.0015,
+    "general_max_chance": 0.15,
+    "base_damage_mult": 1.25
   },
-  "morale_combat": {
-    "default": 50, "max": 100, "min": 0,
-    "bonus_at_max": 0.30,
-    "penalty_at_min": -0.10,
-    "rout_threshold": 15,
-    "recover_per_sec": 0.5,
-    "decay_per_hit": 2.0,
-    "leader_killed_penalty": 30,
+  "morale": {
+    "default": 55,
+    "max": 100,
+    "min": 0,
+    "zone_recover_per_sec": 2.0,
+    "decay_outside_per_sec": 0.05,
+    "combat_extra_decay_per_sec": 0.15,
+    "famine_decay_per_sec": 0.2,
+    "crowd_support_divisor": 0.08,
+    "crowd_n_threshold": 20,
+    "friendly_death_penalty": 4.0,
+    "friendly_death_radius": 8.0,
+    "kill_bonus": 3.0,
+    "kill_ally_bonus": 1.0,
+    "kill_ally_radius": 10.0,
+    "village_commander_no_decay": true,
+    "ambush_hit_penalty": 10.0,
+    "temple_buff_bonus": 15.0,
     "duel_win_bonus": 15,
-    "duel_lose_penalty": 20
+    "duel_lose_penalty": 20,
+    "bonus_at_max": 0.30,
+    "note": "士气与酒无关：酒只回血、包子只回体力。士气只影响攻击(0→×0.85 / 50→×1.0 / 100→×1.30)"
   },
   "stamina": {
-    "max": 100, "default": 100,
-    "march_cost_per_sec": 1.5,
-    "combat_cost_per_sec": 3.0,
-    "recover_idle_per_sec": 2.0,
-    "recover_in_city_per_sec": 5.0,
-    "recover_supply_aura_per_sec": 4.0,
-    "zero_stamina_penalty": 0.25
+    "_deprecated": "体力数值以 config/logistics.json → stamina 为准，本块仅保留旧字段做兼容读取",
+    "default": 100,
+    "max": 100,
+    "supply_zone_drain": 0.0,
+    "supply_zone_recover": 2.0,
+    "drain_above_50": 0.06,
+    "drain_below_50": 0.09,
+    "zero_penalty_attack_delay_mult": 2.0
+  },
+  "wine_heal": {
+    "hp_per_wine": 25.0,
+    "zone_rate": 2.0,
+    "cart_rate": 2.0,
+    "field_rate": 0.0,
+    "note": "🍶 酒=回血：补给圈内自动饮酒，每 25 HP 消耗 1 酒；圈外默认不自动回血（field_rate=0）"
+  },
+  "archery": {
+    "base_accuracy": 0.90,
+    "mounted_accuracy_mult": 0.55,
+    "accuracy_tech_per_level": 0.04,
+    "accuracy_tech_cap": 0.20,
+    "baima_tech_cap": 0.10,
+    "evade_base_threshold": 5.0,
+    "evade_per_speed": 0.12,
+    "evade_max": 0.45,
+    "note": "🏹 弓兵骑马命中 ×0.55；白马义从骑马不失精度且可额外提升（上限 +10%）；移速超过阈值的骑乘目标可躲箭"
+  },
+  "projectile": {
+    "arrow_speed": 30.0,
+    "arc_height": 1.6,
+    "hit_radius": 1.3,
+    "miss_spread_min": 1.6,
+    "miss_spread_max": 3.2,
+    "note": "箭矢飞行时间 = 距离 / 速度；到达点与目标实际位置距离 > hit_radius 即判定射空"
   },
   "hp_regen": {
     "out_of_combat_delay": 5.0,
@@ -39,12 +79,43 @@
     "city_regen_per_sec": 0.02,
     "garrison_regen_per_sec": 0.02
   },
+  "capture": {
+    "lock_ratio": 0.10,
+    "restore_ratio": 0.50,
+    "regen_per_sec": 0.01,
+    "village_entry_radius": 3.5,
+    "government_entry_radius": 6.0,
+    "note": "🏛 官府/村镇血量锁在 10%，锁血后不可再被攻击；敌方单位进入范围并推进占领条→易主，易主瞬间恢复到 50% 血，之后按 1%/s 缓慢回满"
+  },
+  "fire_zone": {
+    "thunder_car": {
+      "duration": 5.0,
+      "radius": 3.0,
+      "tick_interval": 0.5,
+      "dps": 8.0,
+      "cooldown": 5.0,
+      "note": "🔥 霹雳车砸中后地表起火 5 秒，半径 3 米内敌方单位每 0.5 秒吃 4 点灼烧；同一台车 5 秒内最多铺一处火"
+    }
+  },
   "experience": {
-    "kill_exp": 20,
-    "assist_exp": 8,
-    "building_destroy_exp": 50
+    "kill_soldier": { "killer": 20, "share_pool": 20, "per_recipient_max": 10, "note": "击杀者固定 20；参与者平分 20 池，每人最多 10" },
+    "kill_general": { "killer": 50, "share_pool": 50, "per_recipient_max": 10, "note": "击杀武将：击杀者 50；参与者平分 50 池，每人最多 10" },
+    "destroy_siege": { "share_pool": 30, "per_recipient_max": 10, "note": "摧毁敌方器械：所有参与者（含补刀者）平分 30 池，单人最多 10" },
+    "destroy_building": { "final_destroyer": 20, "share_pool": 50, "per_recipient_max": 10, "note": "摧毁建筑：补刀者 20；共享 50 池，单人最多 10" },
+    "capture_settlement": { "share_pool": 200, "per_recipient_max": 50, "note": "占领村镇/城池：参与单位平分 200，每人最多 50" },
+    "contributor_window": 30.0
+  },
+  "supply_consumption": {
+    "bun_per_unit_per_min": 1.0,
+    "wine_per_unit_per_min": 1.0,
+    "crowd_penalty_mult": 1.3,
+    "crowd_n_threshold": 20
   },
   "siege_haulers": {
-    "ladder": 4, "ram": 4, "bed_bow": 4, "trebuchet": 6, "thunder_car": 8
+    "ladder": 4,
+    "ram": 4,
+    "bed_bow": 4,
+    "trebuchet": 6,
+    "thunder_car": 8
   }
 }

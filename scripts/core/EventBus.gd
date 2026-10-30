@@ -1,4 +1,4 @@
-﻿extends Node
+extends Node
 ## 事件总线 — 全局信号分发中心
 ## 所有跨系统通信通过此总线，避免直接引用
 
@@ -19,11 +19,12 @@ signal village_captured(faction: String, village)
 signal horse_captured(faction: String, horse)
 signal diplomatic_action(action: String, from_faction: String, to_faction: String)
 signal season_changed(new_season: String)
+signal disaster_occurred(disaster_id: String, disaster_name: String, victims: Array)
 signal morale_changed(faction: String, new_morale: float)
 signal war_declared(attacker: String, defender: String)
 signal victory(faction: String)
 signal defeat(faction: String)
 signal float_text(text: String, position: Vector3, color: Color)
 signal rally_point_set(building, position: Vector3)
-
-
+signal resource_produced(faction: String, resource: String, amount: float, building)
+signal relic_completed(faction: String, relic_id: String, relic_name: String)

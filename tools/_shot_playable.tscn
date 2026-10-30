@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cshotplayable001"]
+
+[ext_resource type="Script" path="res://tools/_shot_playable.gd" id="1_sp"]
+
+[node name="ShotPlayable" type="Node"]
+script = ExtResource("1_sp")

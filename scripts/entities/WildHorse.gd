@@ -50,22 +50,34 @@ func _create_visual() -> void:
 	var sprite: Sprite3D = Sprite3D.new()
 	sprite.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	sprite.shaded = false
-	sprite.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	var adef: Dictionary = DataLoader.get_asset_def("wild_horse", horse_type)
 	if not adef.is_empty():
 		var tex: Texture2D = DataLoader.get_sprite_texture("wild_horse", horse_type)
 		if tex:
 			sprite.texture = tex
+		sprite.pixel_size = DataLoader.get_sprite_pixel_size("wild_horse", tex)
 		var s: float = float(adef.get("scale", 1.3))
 		sprite.scale = Vector3(s, s, s)
-		sprite.position.y = float(adef.get("offset_y", 0.7))
+		# 和单位/建筑同一套贴地公式：底边留白是量出来的，不是手填的
+		sprite.position.y = DataLoader.get_sprite_anchor_y("wild_horse", horse_type, s)
 	add_child(sprite)
+
+## 贴地。马之前完全没有这一步 —— `_wander()` 只改了 x/z，
+## y 一直是出生时的高度，于是地形起伏的地方它会飞在半空或者钻到地底。
+func _snap_to_ground(delta: float) -> void:
+	var gh: float = Terrain.get_height(global_position.x, global_position.z)
+	var dy: float = gh - global_position.y
+	if absf(dy) > 1.2:
+		global_position.y = gh
+	else:
+		global_position.y = lerpf(global_position.y, gh, clampf(delta * 20.0, 0.0, 1.0))
 
 func _process(delta: float) -> void:
 	if GameManager.paused or GameManager.game_over or captured:
 		return
 	_check_capturers(delta)
 	_wander(delta)
+	_snap_to_ground(delta)
 
 func _wander(delta: float) -> void:
 	wander_timer -= delta
@@ -88,11 +100,12 @@ func _check_capturers(delta: float) -> void:
 		capturer_faction = ""
 		return
 	var faction_counts: Dictionary = {}
+	var f: String = ""
 	for u in near_units:
-		var f: String = u.get_faction()
+		f = u.get_faction()
 		faction_counts[f] = faction_counts.get(f, 0) + 1
 	if faction_counts.size() == 1:
-		var f: String = near_units[0].get_faction()
+		f = near_units[0].get_faction()
 		capturer_faction = f
 		capture_progress = min(100.0, capture_progress + 20.0 * delta)
 		if capture_progress >= 100.0:
@@ -103,10 +116,8 @@ func _check_capturers(delta: float) -> void:
 func _capture(faction_id: String, capturers: Array) -> void:
 	captured = true
 	EventBus.float_text.emit("捕获 %s!" % horse_name, global_position + Vector3(0, 2, 0), Color(0.5, 0.8, 1.0))
-	# 给捕获单位所在势力增加马匹储备
-	if not "horses" in GameManager.factions[faction_id]:
-		GameManager.factions[faction_id].horses = 0
-	GameManager.factions[faction_id].horses += 1
+	# 给捕获势力增加可用马匹（统一写入 resources["horse"]）
+	GameManager.add_resource(faction_id, "horse", 1.0)
 	# 名马额外加成
 	if rarity == "legendary":
 		GameManager.factions[faction_id].morale = min(100.0, GameManager.factions[faction_id].morale + 10.0)
@@ -122,6 +133,27 @@ func _capture(faction_id: String, capturers: Array) -> void:
 		nearest.mounted = true
 		nearest.move_speed += speed_bonus
 		nearest.atk += atk_bonus
+		if nearest.has_method("_add_horse"):
+			nearest._add_horse()
 		EventBus.float_text.emit("%s 骑乘 %s!" % [nearest.unit_id, horse_name], nearest.global_position + Vector3(0, 2, 0), Color(0.5, 0.8, 1.0))
 	GameManager.wild_horses.erase(self)
 	queue_free()
+
+# 💾 存档 / 读档
+func serialize() -> Dictionary:
+	return {
+		"type": "wild_horse",
+		"horse_id": horse_id,
+		"horse_type": horse_type,
+		"pos": {"x": global_position.x, "y": global_position.y, "z": global_position.z},
+		"captured": captured,
+		"capture_progress": capture_progress,
+		"capturer_faction": capturer_faction,
+	}
+
+func apply_state(d: Dictionary) -> void:
+	horse_id = str(d.get("horse_id", horse_id))
+	horse_type = str(d.get("horse_type", horse_type))
+	captured = bool(d.get("captured", false))
+	capture_progress = float(d.get("capture_progress", 0.0))
+	capturer_faction = str(d.get("capturer_faction", ""))

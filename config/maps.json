@@ -1,0 +1,69 @@
+{
+  "_meta": { "note": "地图配置。size=网格数，cities=城池，resource_density=资源密度乘数" },
+  "maps": {
+    "jiangshan_yitong": {
+      "name": "江山一统", "size": 84, "slots": 8, "resource_density": 1.0,
+      "cities": [
+        { "name": "许昌", "pos": [68, 40], "faction": "wei" },
+        { "name": "成都", "pos": [18, 48], "faction": "shu" },
+        { "name": "建业", "pos": [52, 62], "faction": "wu" },
+        { "name": "洛阳", "pos": [52, 42], "faction": "neutral" },
+        { "name": "长安", "pos": [32, 38], "faction": "neutral" },
+        { "name": "襄阳", "pos": [44, 52], "faction": "neutral" },
+        { "name": "下邳", "pos": [62, 56], "faction": "neutral" },
+        { "name": "汉中", "pos": [28, 54], "faction": "neutral" }
+      ],
+      "notes": "8城最大地图，推荐3-8人混战"
+    },
+    "chongzhengheshang": {
+      "name": "重整河山", "size": 72, "slots": 6, "resource_density": 1.1,
+      "cities": [
+        { "name": "许昌", "pos": [56, 32], "faction": "wei" },
+        { "name": "成都", "pos": [14, 42], "faction": "shu" },
+        { "name": "建业", "pos": [42, 54], "faction": "wu" },
+        { "name": "洛阳", "pos": [40, 34], "faction": "neutral" },
+        { "name": "襄阳", "pos": [34, 46], "faction": "neutral" },
+        { "name": "汉中", "pos": [22, 48], "faction": "neutral" }
+      ],
+      "notes": "6城中等地图，资源略丰富"
+    },
+    "xiyu_xiongfeng": {
+      "name": "西域雄风", "size": 72, "slots": 5, "resource_density": 0.9,
+      "resource_modifier": { "wood": 0.4, "stone": 1.4, "gold": 1.2 },
+      "cities": [
+        { "name": "敦煌", "pos": [16, 28], "faction": "shu" },
+        { "name": "武威", "pos": [30, 32], "faction": "wei" },
+        { "name": "张掖", "pos": [24, 40], "faction": "neutral" },
+        { "name": "酒泉", "pos": [40, 26], "faction": "neutral" },
+        { "name": "楼兰", "pos": [56, 38], "faction": "wu" }
+      ],
+      "notes": "沙漠地图！木材×0.4极缺，考验经济策略"
+    },
+    "zhulu_zhongyuan": {
+      "name": "逐鹿中原", "size": 60, "slots": 4, "resource_density": 1.2,
+      "cities": [
+        { "name": "许昌", "pos": [42, 28], "faction": "wei" },
+        { "name": "成都", "pos": [10, 38], "faction": "shu" },
+        { "name": "建业", "pos": [32, 46], "faction": "wu" },
+        { "name": "洛阳", "pos": [28, 30], "faction": "neutral" }
+      ],
+      "notes": "小地图快节奏，推荐3-4人"
+    },
+    "wujin_de_chengzheng": {
+      "name": "无尽的征程", "size": 84, "slots": 8, "resource_density": 1.0,
+      "cities": [
+        { "name": "许昌", "pos": [68, 32], "faction": "wei" },
+        { "name": "成都", "pos": [10, 38], "faction": "shu" },
+        { "name": "建业", "pos": [56, 68], "faction": "wu" },
+        { "name": "洛阳", "pos": [48, 34], "faction": "neutral" },
+        { "name": "长安", "pos": [24, 30], "faction": "neutral" },
+        { "name": "襄阳", "pos": [38, 54], "faction": "neutral" },
+        { "name": "下邳", "pos": [62, 56], "faction": "neutral" },
+        { "name": "汉中", "pos": [20, 50], "faction": "neutral" },
+        { "name": "邺城", "pos": [56, 18], "faction": "neutral" },
+        { "name": "建安", "pos": [60, 48], "faction": "neutral" }
+      ],
+      "notes": "最大地图，10城8人持久战"
+    }
+  }
+}

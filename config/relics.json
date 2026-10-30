@@ -1,0 +1,73 @@
+{
+  "_meta": {
+    "version": "2.0",
+    "note": "古碑任务系统：随机古碑（near 近城 / mid 中部）→ 收集残片/付材料修复 → 随机派发护送/清剿任务（途中刷山贼）→ 资源 + 武将训练经验 + 限时增益。数值统一在此调整。"
+  },
+  "relics": {
+    "xuanyuan_bei": {
+      "name": "轩辕古碑",
+      "tier": "near",
+      "difficulty": 1,
+      "repair_hp": 600.0,
+      "repair": { "mode": "direct", "fragments": 0, "cost": { "wood": 60.0, "gold": 20.0 } },
+      "quest_pool": ["cargo", "raid"],
+      "reward": { "gold": 200.0, "food": 200.0 },
+      "officer_xp": 60.0,
+      "xp": 40.0,
+      "buff": { "key": "farm_output", "value": 0.10, "duration": 600.0 },
+      "desc": "农田产出 +10%，持续 10 分钟"
+    },
+    "yuwang_bei": {
+      "name": "禹王碑",
+      "tier": "near",
+      "difficulty": 2,
+      "repair_hp": 1200.0,
+      "repair": { "mode": "gather", "fragments": 2, "cost": { "wood": 90.0, "iron": 30.0 } },
+      "quest_pool": ["cargo", "raid"],
+      "reward": { "gold": 400.0, "iron": 120.0 },
+      "officer_xp": 60.0,
+      "xp": 80.0,
+      "buff": { "key": "gather_speed", "value": 0.10, "duration": 600.0 },
+      "desc": "采集速度 +10%，持续 10 分钟"
+    },
+    "jiuzhou_bei": {
+      "name": "九州鼎碑",
+      "tier": "mid",
+      "difficulty": 3,
+      "repair_hp": 1800.0,
+      "repair": { "mode": "gather", "fragments": 3, "cost": { "wood": 150.0, "iron": 70.0, "gold": 50.0 } },
+      "quest_pool": ["person", "cargo", "raid"],
+      "reward": { "gold": 600.0, "food": 400.0, "iron": 200.0 },
+      "officer_xp": 150.0,
+      "xp": 120.0,
+      "buff": { "key": "disaster_reduction", "value": 0.10, "duration": 900.0 },
+      "desc": "灾害减免 +10%，持续 15 分钟"
+    }
+  },
+  "spawn": {
+    "near_count": 2,
+    "mid_count": 1,
+    "near_min": 10.0,
+    "near_max": 25.0,
+    "mid_radius": 22.0,
+    "min_dist_between": 14.0,
+    "fragment_radius": 26.0,
+    "fragment_min_gap": 8.0
+  },
+  "quest": {
+    "cargo": { "unit_id": "escort_cargo", "desc": "护送辎重到 %s", "arrive_radius": 6.0 },
+    "person": { "unit_id": "escort_person", "desc": "护送名士到 %s", "arrive_radius": 6.0 },
+    "raid": { "desc": "清剿山贼 %s", "spawn_radius": 12.0 },
+    "officer_xp_note": "任务完成奖励武将训练经验，直接分给该势力全部武将"
+  },
+  "bandit": {
+    "unit_ids": ["bandit_footman", "bandit_archer", "bandit_chief"],
+    "faction": "bandit",
+    "wave_interval": 22.0,
+    "waves": { "near": 1, "mid": 2 },
+    "wave_size": { "near": [2, 3], "mid": [3, 4] },
+    "raid_size": { "near": 4, "mid": 6 },
+    "spawn_ahead": 8.0,
+    "note": "护送任务按间隔在队伍前方刷山贼；raid 任务在碑周一次性生成营地"
+  }
+}

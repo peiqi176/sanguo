@@ -1,22 +1,82 @@
 ﻿{
-  "_meta": { "note": "辎重车后勤系统；断粮=胜负手；机械由士兵拖拽不自走" },
+  "_meta": {
+    "version": "2.0",
+    "note": "V2：辎重车不需马匹（农夫负重）、驻扎恢复不分城内城外、删劫营摧毁、村庄金买包子补体力、stone→iron"
+  },
   "supply_cart": {
-    "hp": 200, "move_speed": 1.8, "capacity": 500,
-    "cost": { "wood": 120, "food": 80, "stone": 40 }, "build_time": 25,
-    "source_building": "siege_workshop", "requires_tech": "supply_cart",
-    "aura_radius": 6.0,
-    "effects": { "stamina_recover": 4.0, "food_supply": 2.0, "morale_recover": 1.0 }
+    "hp": 1000,
+    "move_speed": 1.8,
+    "cost": { "wood": 40, "iron": 20, "bun": 200, "wine": 200 },
+    "build_time": 25,
+    "source_building": "siege_workshop",
+    "requires_tech": "supply_cart",
+    "requires_horse": false,
+    "aura_radius_move": 6.0,
+    "aura_radius_setup": 12.0,
+    "bun_capacity": 200,
+    "wine_capacity": 200,
+    "service_capacity": 15,
+    "garrison_cap": 10,
+    "setup_time": 3.0,
+    "pack_time": 3.0,
+    "garrison_recover_mult": 1.5,
+    "stamina_recover_same_inside_outside": true,
+    "note": "不需马匹，农夫负重；扎营后补给圈12格，驻扎恢复不分城内城外"
   },
   "hauling": {
-    "ladder": 4, "ram": 4, "bed_bow": 4, "trebuchet": 6, "thunder_car": 8,
+    "ladder": 4,
+    "ram": 4,
+    "bed_bow": 4,
+    "trebuchet": 6,
+    "thunder_car": 8,
     "speed_per_hauler": 0.3
   },
+  "stamina": {
+    "drain_outside": 0.06,
+    "drain_outside_low": 0.09,
+    "drain_low_threshold": 50.0,
+    "small_party_mult": 0.7,
+    "large_party_mult": 1.25,
+    "crowd_mult": 1.25,
+    "starving_extra_drain": 0.10,
+    "recover_city": 2.0,
+    "recover_village": 2.0,
+    "recover_building": 2.0,
+    "recover_tent": 4.0,
+    "hold_near_cart": true,
+    "note": "体力只随时间变化，与攻击/移动无关。区外基础 0.06/s（100→0 约 28 分钟），低于 50 时 0.09/s；断粮只额外 +0.10/s（不再是 -3/s）。城池/村庄 +2/s，营帐 +4/s（加速），辎重车旁只保不降不回。"
+  },
+  "horse_tiers": {
+    "1": { "name": "劣马", "speed_bonus": 2.0 },
+    "2": { "name": "骏马", "speed_bonus": 2.5 },
+    "3": { "name": "良马", "speed_bonus": 3.0 },
+    "4": { "name": "白马", "speed_bonus": 3.5 },
+    "note": "不论马匹优劣，骑上均占用 1 匹可用马匹；下马归还 1 匹。等级只影响移速加成。"
+  },
   "village_supply": {
-    "purchase_rate": 1.0, "cost_per_food": 2.0, "cost_per_wood": 3.0,
-    "max_buy_per_trip": 50
+    "buy_stamina_with_gold": true,
+    "cost_per_bun": 2.0,
+    "bun_per_stamina_purchase": 1.0,
+    "stamina_per_purchase": 50.0,
+    "action_duration": 8.0,
+    "cooldown_per_unit": 8.0,
+    "note": "村庄买体力：2金+1包子→+50体力，8秒内完成"
   },
   "field_kits": {
     "small": { "cost": { "gold": 20 }, "heal": 50 },
     "large": { "cost": { "gold": 60 }, "heal": 150 }
+  },
+  "transport": {
+    "capacity_per_peasant": 50.0,
+    "max_peasants": 5,
+    "move_speed": 1.5,
+    "ambush_loss_ratio": 0.5,
+    "note": "村庄运输队：每个民夫载 50 单位资源，最多 5 民夫；被劫损失 50% 货物"
+  },
+  "naval": {
+    "board_range": 3.0,
+    "unload_radius": 4.0,
+    "arrow_min_range": 2.0,
+    "note": "水路运兵：靠船 3 米内登船，下船就近找陆地；船本体/载员水上射箭，最小射程 2"
   }
 }

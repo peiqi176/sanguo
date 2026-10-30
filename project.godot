@@ -8,8 +8,6 @@
 
 config_version=5
 
-"ï»¿config_version"=5
-
 [application]
 
 config/name="三分天下·再起"
@@ -22,7 +20,11 @@ config/icon="res://icon.svg"
 
 EventBus="*res://scripts/core/EventBus.gd"
 DataLoader="*res://scripts/data/DataLoader.gd"
+Terrain="*res://scripts/core/Terrain.gd"
 GameManager="*res://scripts/core/GameManager.gd"
+MapSave="*res://scripts/core/MapSaveManager.gd"
+FogOfWar="*res://scripts/core/FogOfWar.gd"
+OcclusionSystem="*res://scripts/core/OcclusionSystem.gd"
 
 [display]
 
@@ -30,6 +32,10 @@ window/size/viewport_width=1440
 window/size/viewport_height=900
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[dotnet]
+
+project/assembly_name="三分天下·再起"
 
 [input]
 
@@ -67,4 +73,8 @@ camera_rotate_right={
 [rendering]
 
 renderer/rendering_method.mobile="gl_compatibility"
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality=3
+textures/default_filters/anisotropic_filtering_level=3
+anti_aliasing/quality/msaa_3d=3
 environment/defaults/default_clear_color=Color(0.15, 0.18, 0.12, 1)
+

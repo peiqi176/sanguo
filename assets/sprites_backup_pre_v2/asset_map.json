@@ -1,0 +1,400 @@
+{
+  "_meta": {
+    "billboard": true,
+    "note": "实体ID -> 傲世三国BMP素材映射",
+    "sprite_policy": "offset_y 语义 = 在地面之上的额外抬升（米），默认必须为 0。贴地高度由 DataLoader.get_sprite_anchor_y() 用 alpha 包围盒实时计算；content_pad 是该图底边留白占比，仅供诊断，运行时不读。",
+    "version": "1.0"
+  },
+  "buildings": {
+    "111111111": {
+      "content_pad": 0.0098,
+      "offset_y": 0,
+      "scale": 1.5,
+      "sprite": "111111111.png"
+    },
+    "arrow_tower": {
+      "content_pad": 0.0195,
+      "offset_y": 0.0,
+      "scale": 1.4,
+      "sprite": "379-1.png"
+    },
+    "barracks_archer": {
+      "content_pad": 0.168,
+      "offset_y": 0.0,
+      "scale": 1.8,
+      "sprite": "361-1.png"
+    },
+    "barracks_spear": {
+      "content_pad": 0.0664,
+      "offset_y": 0.0,
+      "scale": 1.8,
+      "sprite": "359-1.png"
+    },
+    "barracks_special": {
+      "content_pad": 0.1445,
+      "offset_y": 0.0,
+      "scale": 1.9,
+      "sprite": "377-1.png"
+    },
+    "barracks_sword": {
+      "content_pad": 0.0166,
+      "offset_y": 0.0,
+      "scale": 1.8,
+      "sprite": "357-1.png"
+    },
+    "crossbow_tower": {
+      "content_pad": 0.0957,
+      "offset_y": 0.0,
+      "scale": 1.4,
+      "sprite": "381-1.png"
+    },
+    "elite_camp": {
+      "content_pad": 0.1035,
+      "offset_y": 0.0,
+      "scale": 2.0,
+      "sprite": "395-1.png"
+    },
+    "farm": {
+      "content_pad": 0.2129,
+      "offset_y": 0.0,
+      "scale": 1.6,
+      "sprite": "347-1.png"
+    },
+    "fishery": {
+      "content_pad": 0.0547,
+      "offset_y": 0.0,
+      "scale": 1.6,
+      "sprite": "349-1.png"
+    },
+    "general_stage": {
+      "content_pad": 0.0859,
+      "offset_y": 0.0,
+      "scale": 1.9,
+      "sprite": "397-1.png"
+    },
+    "government": {
+      "content_pad": 0.1396,
+      "offset_y": 0.0,
+      "scale": 2.2,
+      "sprite": "339-1.png"
+    },
+    "granary": {
+      "content_pad": 0.0215,
+      "offset_y": 0.0,
+      "scale": 1.7,
+      "sprite": "367-1.png"
+    },
+    "hanlinyuan": {
+      "content_pad": 0.0371,
+      "offset_y": 0.0,
+      "scale": 2.0,
+      "sprite": "365-1.png"
+    },
+    "house": {
+      "content_pad": 0.1084,
+      "offset_y": 0.0,
+      "scale": 1.6,
+      "sprite": "345-1.png"
+    },
+    "inn": {
+      "content_pad": 0.0898,
+      "offset_y": 0.0,
+      "scale": 1.7,
+      "sprite": "371-1.png"
+    },
+    "lumber": {
+      "content_pad": 0.1533,
+      "offset_y": 0.0,
+      "scale": 1.6,
+      "sprite": "351-1.png"
+    },
+    "military_camp": {
+      "content_pad": 0.1621,
+      "offset_y": 0.0,
+      "scale": 2.0,
+      "sprite": "387-1.png"
+    },
+    "paifang": {
+      "content_pad": 0.0898,
+      "offset_y": 0.0,
+      "scale": 1.8,
+      "sprite": "343-1.png"
+    },
+    "quarry": {
+      "content_pad": 0.1709,
+      "offset_y": 0.0,
+      "scale": 1.6,
+      "sprite": "353-1.png"
+    },
+    "siege_workshop": {
+      "content_pad": 0.125,
+      "offset_y": 0.0,
+      "scale": 2.0,
+      "sprite": "369-1.png"
+    },
+    "stable": {
+      "content_pad": 0.2041,
+      "offset_y": 0.0,
+      "scale": 1.9,
+      "sprite": "373-1.png"
+    },
+    "training_camp": {
+      "content_pad": 0.1865,
+      "offset_y": 0.0,
+      "scale": 1.7,
+      "sprite": "363-1.png"
+    },
+    "training_camp_t2": {
+      "content_pad": 0.1338,
+      "offset_y": 0.0,
+      "scale": 1.7,
+      "sprite": "375-1.png"
+    },
+    "wall_inner": {
+      "content_pad": 0.0,
+      "offset_y": 0.0,
+      "scale": 1.5,
+      "sprite": "389-1.png"
+    },
+    "wall_outer": {
+      "content_pad": 0.0186,
+      "offset_y": 0.0,
+      "scale": 1.5,
+      "sprite": "391-1.png"
+    },
+    "wall_stone": {
+      "content_pad": 0.1523,
+      "offset_y": 0.0,
+      "scale": 1.6,
+      "sprite": "393-1.png"
+    },
+    "workshop": {
+      "content_pad": 0.1367,
+      "offset_y": 0.0,
+      "scale": 1.6,
+      "sprite": "355-1.png"
+    }
+  },
+  "generals": {
+    "cao_cao": {
+      "content_pad": 0.001,
+      "offset_y": 0.0,
+      "scale": 1.7,
+      "sprite": "3226-1.png"
+    },
+    "default": {
+      "content_pad": 0.0039,
+      "offset_y": 0.0,
+      "scale": 1.6,
+      "sprite": "3224-1.png"
+    },
+    "liubei": {
+      "content_pad": 0.0078,
+      "offset_y": 0.0,
+      "scale": 1.7,
+      "sprite": "3228-1.png"
+    },
+    "sunquan": {
+      "content_pad": 0.0049,
+      "offset_y": 0.0,
+      "scale": 1.7,
+      "sprite": "3230-1.png"
+    }
+  },
+  "resource_nodes": {
+    "food": {
+      "content_pad": 0.0996,
+      "offset_y": 0.0,
+      "scale": 1.4,
+      "sprite": "2172-1.png"
+    },
+    "stone": {
+      "content_pad": 0.1738,
+      "offset_y": 0.0,
+      "scale": 1.4,
+      "sprite": "2170-1.png"
+    },
+    "wood": {
+      "content_pad": 0.2197,
+      "offset_y": 0.0,
+      "scale": 1.5,
+      "sprite": "2168-1.png"
+    }
+  },
+  "supply_cart": {
+    "supply_cart": {
+      "content_pad": 0.0615,
+      "offset_y": 0.0,
+      "scale": 1.5,
+      "sprite": "3240-1.png"
+    }
+  },
+  "units": {
+    "archer": {
+      "content_pad": 0.0039,
+      "offset_y": 0.0,
+      "scale": 1.3,
+      "sprite": "3170-1.png"
+    },
+    "axeman": {
+      "content_pad": 0.0,
+      "offset_y": 0.0,
+      "scale": 1.4,
+      "sprite": "3172-1.png"
+    },
+    "baier_soldier": {
+      "content_pad": 0.0068,
+      "offset_y": 0.0,
+      "scale": 1.5,
+      "sprite": "3196-1.png"
+    },
+    "bed_bow": {
+      "content_pad": 0.0928,
+      "offset_y": 0.0,
+      "scale": 1.8,
+      "sprite": "3216-1.png"
+    },
+    "civil": {
+      "content_pad": 0.0264,
+      "offset_y": 0.0,
+      "scale": 1.2,
+      "sprite": "3164-1.png"
+    },
+    "crossbow": {
+      "content_pad": 0.0078,
+      "offset_y": 0.0,
+      "scale": 1.4,
+      "sprite": "3176-1.png"
+    },
+    "danyang_soldier": {
+      "content_pad": 0.0195,
+      "offset_y": 0.0,
+      "scale": 1.5,
+      "sprite": "3200-1.png"
+    },
+    "gold_spear": {
+      "content_pad": 0.041,
+      "offset_y": 0.0,
+      "scale": 1.4,
+      "sprite": "3174-1.png"
+    },
+    "hengjiang_archer": {
+      "content_pad": 0.0029,
+      "offset_y": 0.0,
+      "scale": 1.5,
+      "sprite": "3204-1.png"
+    },
+    "imperial_archer": {
+      "content_pad": 0.0039,
+      "offset_y": 0.0,
+      "scale": 1.6,
+      "sprite": "3210-1.png"
+    },
+    "imperial_blade": {
+      "content_pad": 0.001,
+      "offset_y": 0.0,
+      "scale": 1.6,
+      "sprite": "3206-1.png"
+    },
+    "imperial_spear": {
+      "content_pad": 0.0186,
+      "offset_y": 0.0,
+      "scale": 1.6,
+      "sprite": "3208-1.png"
+    },
+    "ladder": {
+      "content_pad": 0.0293,
+      "offset_y": 0.0,
+      "scale": 1.5,
+      "sprite": "3222-1.png"
+    },
+    "peasant": {
+      "content_pad": 0.0264,
+      "offset_y": 0.0,
+      "scale": 1.2,
+      "sprite": "3164-1.png"
+    },
+    "qingzhou_soldier": {
+      "content_pad": 0.0107,
+      "offset_y": 0.0,
+      "scale": 1.5,
+      "sprite": "3198-1.png"
+    },
+    "ram": {
+      "content_pad": 0.1367,
+      "offset_y": 0.0,
+      "scale": 1.7,
+      "sprite": "3220-1.png"
+    },
+    "sentinel": {
+      "content_pad": 0.0127,
+      "offset_y": 0.0,
+      "scale": 1.2,
+      "sprite": "3178-1.png"
+    },
+    "spear": {
+      "content_pad": 0.0225,
+      "offset_y": 0.0,
+      "scale": 1.3,
+      "sprite": "3168-1.png"
+    },
+    "sword": {
+      "content_pad": 0.0117,
+      "offset_y": 0.0,
+      "scale": 1.3,
+      "sprite": "3166-1.png"
+    },
+    "thunder_car": {
+      "content_pad": 0.1533,
+      "offset_y": 0.0,
+      "scale": 1.9,
+      "sprite": "3218-1.png"
+    },
+    "trebuchet": {
+      "content_pad": 0.1162,
+      "offset_y": 0.0,
+      "scale": 1.8,
+      "sprite": "3214-1.png"
+    },
+    "zhuge_nu": {
+      "content_pad": 0.0,
+      "offset_y": 0.0,
+      "scale": 1.5,
+      "sprite": "3202-1.png"
+    }
+  },
+  "village": {
+    "village": {
+      "content_pad": 0.1709,
+      "offset_y": 0.0,
+      "scale": 1.8,
+      "sprite": "2382-1.png"
+    }
+  },
+  "wild_horse": {
+    "chitu": {
+      "content_pad": 0.0225,
+      "offset_y": 0.0,
+      "scale": 1.4,
+      "sprite": "3236-1.png"
+    },
+    "dilu": {
+      "content_pad": 0.0137,
+      "offset_y": 0.0,
+      "scale": 1.4,
+      "sprite": "3238-1.png"
+    },
+    "red": {
+      "content_pad": 0.0107,
+      "offset_y": 0.0,
+      "scale": 1.3,
+      "sprite": "3234-1.png"
+    },
+    "white": {
+      "content_pad": 0.0156,
+      "offset_y": 0.0,
+      "scale": 1.3,
+      "sprite": "3232-1.png"
+    }
+  }
+}

@@ -1,5 +1,8 @@
 ﻿{
-  "_meta": { "note": "翰林院三分支科技；官府2级需科技达60%；辎重车为器械研究前置" },
+  "_meta": {
+    "version": "2.0",
+    "note": "V2大改：步兵加成→所有士兵、删军纪严明、加体力/血量/视野/招募/马船/武将属性科技、加势力特殊科技、官府升级改科技完成率、stone→iron"
+  },
   "branches": {
     "civilian": {
       "name": "民生科技",
@@ -7,38 +10,79 @@
         "farm_tech_1": { "name": "精耕细作", "effect": { "farm_output": 0.15 }, "cost": { "gold": 80, "food": 100 }, "time": 30, "gov_req": 1 },
         "farm_tech_2": { "name": "轮作休耕", "effect": { "farm_output": 0.15 }, "cost": { "gold": 150, "food": 200 }, "time": 45, "requires": ["farm_tech_1"], "gov_req": 2 },
         "fishery_tech": { "name": "渔猎改良", "effect": { "fishery_output": 0.20 }, "cost": { "gold": 100, "wood": 80 }, "time": 35, "gov_req": 1 },
-        "morale_tech": { "name": "仁政安民", "effect": { "morale_recover": 0.5 }, "cost": { "gold": 120, "food": 100 }, "time": 40, "gov_req": 2 },
         "cart_tech": { "name": "农车运输", "effect": { "gather_speed": 0.20 }, "cost": { "gold": 150, "wood": 120 }, "time": 40, "gov_req": 2 },
-        "workshop_tech": { "name": "百工兴盛", "effect": { "gold_output": 0.20 }, "cost": { "gold": 100, "wood": 80 }, "time": 35, "gov_req": 1 }
+        "workshop_tech": { "name": "百工兴盛", "effect": { "gold_output": 0.20 }, "cost": { "gold": 100, "wood": 80 }, "time": 35, "gov_req": 1 },
+        "village_upgrade": { "name": "村镇治理", "effect": { "village_pop_growth": 0.50 }, "cost": { "gold": 150, "food": 150 }, "time": 40, "gov_req": 2 },
+        "morale_tech": { "name": "士气如虹", "effect": { "morale_recover": 0.50 }, "cost": { "gold": 130, "food": 100 }, "time": 35, "gov_req": 2 },
+        "stamina_recover_1": { "name": "养精蓄锐", "effect": { "stamina_recover": 0.20 }, "cost": { "gold": 100, "food": 80 }, "time": 30, "gov_req": 1 },
+        "stamina_drain_1": { "name": "精兵强将", "effect": { "stamina_drain_reduction": 0.15 }, "cost": { "gold": 120, "food": 100 }, "time": 35, "gov_req": 2 },
+        "village_stamina_range": { "name": "村寨守望", "effect": { "village_supply_range": 2 }, "cost": { "gold": 150, "wood": 80 }, "time": 40, "gov_req": 2 },
+        "soldier_vision": { "name": "视野拓展", "effect": { "soldier_vision": 2 }, "cost": { "gold": 120, "wood": 60 }, "time": 30, "gov_req": 1 },
+        "wheelbarrow": { "name": "手推车", "effect": { "carry_40": true }, "cost": { "gold": 100, "wood": 80 }, "time": 30, "gov_req": 1, "requires": ["cart_tech"], "note": "农夫单次携带量 20→40" }
       }
     },
     "military": {
       "name": "军事科技",
       "techs": {
-        "inf_atk_1": { "name": "利刃锻造", "effect": { "infantry_atk": 0.10 }, "cost": { "gold": 100, "stone": 50 }, "time": 30, "gov_req": 1 },
-        "inf_def_1": { "name": "铁甲护身", "effect": { "infantry_def": 0.10 }, "cost": { "gold": 100, "stone": 50 }, "time": 30, "gov_req": 1 },
-        "ranged_tech": { "name": "劲弩长弓", "effect": { "ranged_atk": 0.12, "ranged_range": 0.10 }, "cost": { "gold": 120, "wood": 80 }, "time": 35, "gov_req": 1 },
-        "cavalry_tech": { "name": "骑兵操练", "effect": { "cavalry_atk": 0.12, "cavalry_speed": 0.05 }, "cost": { "gold": 150, "wood": 60 }, "time": 40, "gov_req": 2, "requires_building": "stable" },
-        "morale_mil_tech": { "name": "军纪严明", "effect": { "army_morale": 0.15 }, "cost": { "gold": 130, "food": 100 }, "time": 35, "gov_req": 2 },
+        "all_atk_1": { "name": "利刃锻造", "effect": { "all_soldier_atk": 0.10 }, "cost": { "gold": 100, "iron": 50 }, "time": 30, "gov_req": 1 },
+        "all_def_1": { "name": "铁甲护身", "effect": { "all_soldier_def": 0.10 }, "cost": { "gold": 100, "iron": 50 }, "time": 30, "gov_req": 1 },
+        "archer_accuracy_1": { "name": "弓术校准", "effect": { "archer_accuracy": 1 }, "cost": { "gold": 90, "wood": 70 }, "time": 30, "gov_req": 1, "note": "弓兵命中 +4%（骑马射箭也能少射空）" },
+        "archer_accuracy_2": { "name": "百步穿杨", "effect": { "archer_accuracy": 1 }, "cost": { "gold": 160, "wood": 120 }, "time": 40, "requires": ["archer_accuracy_1"], "gov_req": 2, "note": "弓兵命中再 +4%" },
+        "baima_accuracy": { "name": "白马精射", "effect": { "baima_accuracy": 1 }, "cost": { "gold": 220, "wood": 100 }, "time": 45, "requires": ["archer_accuracy_1"], "gov_req": 2, "note": "白马义从骑射精度额外提升（上限 +10%）" },
+        "ranged_tech": { "name": "劲弩长弓", "effect": { "ranged_atk": 0.12, "ranged_range": 0.10 }, "cost": { "gold": 120, "wood": 80 }, "time": 35, "gov_req": 1, "mutex_group": "army_specialization", "mutex_note": "与「骑兵操练」二选一" },
+        "cavalry_tech": { "name": "骑兵操练", "effect": { "cavalry_atk": 0.12, "cavalry_speed": 0.05 }, "cost": { "gold": 150, "wood": 60 }, "time": 40, "gov_req": 2, "requires_building": "stable", "mutex_group": "army_specialization", "mutex_note": "与「劲弩长弓」二选一" },
         "veteran_tech": { "name": "老兵历练", "effect": { "exp_gain": 0.25 }, "cost": { "gold": 180, "food": 120 }, "time": 45, "gov_req": 3 },
-        "elite_tech": { "name": "精锐之师", "effect": { "tier3_atk": 0.10, "tier3_def": 0.10 }, "cost": { "gold": 250, "stone": 100 }, "time": 55, "gov_req": 3 }
+        "elite_tech": { "name": "精锐之师", "effect": { "tier3_atk": 0.10, "tier3_def": 0.10 }, "cost": { "gold": 250, "iron": 100 }, "time": 55, "gov_req": 3 },
+        "horse_breeding": { "name": "良马培育", "effect": { "cavalry_speed": 0.10 }, "cost": { "gold": 180, "food": 100 }, "time": 45, "gov_req": 2, "requires_building": "stable" },
+        "horse_types": { "name": "战马品种", "effect": { "unlock_special_horses": true }, "cost": { "gold": 250, "food": 150 }, "time": 50, "gov_req": 3, "requires": ["horse_breeding"] }
       }
     },
     "siege": {
       "name": "器械工程",
       "techs": {
-        "supply_cart": { "name": "辎重车", "effect": { "unlock_supply_cart": true }, "cost": { "gold": 100, "wood": 100 }, "time": 30, "gov_req": 2, "note": "器械研究前置" },
+        "supply_cart": { "name": "辎重车", "effect": { "unlock_supply_cart": true }, "cost": { "gold": 100, "wood": 100 }, "time": 30, "gov_req": 2 },
         "ladder": { "name": "云梯", "effect": { "unlock_ladder": true }, "cost": { "gold": 80, "wood": 80 }, "time": 25, "gov_req": 2 },
         "ram": { "name": "冲车", "effect": { "unlock_ram": true }, "cost": { "gold": 120, "wood": 100 }, "time": 30, "gov_req": 2 },
-        "trebuchet_tech": { "name": "投石机", "effect": { "unlock_trebuchet": true, "trebuchet_atk": 0.10 }, "cost": { "gold": 200, "wood": 150, "stone": 80 }, "time": 40, "gov_req": 3, "requires": ["supply_cart"] },
+        "trebuchet_tech": { "name": "投石机", "effect": { "unlock_trebuchet": true, "trebuchet_atk": 0.10 }, "cost": { "gold": 200, "wood": 150, "iron": 80 }, "time": 40, "gov_req": 3, "requires": ["supply_cart"] },
         "bed_bow_tech": { "name": "三弓床弩", "effect": { "unlock_bed_bow": true }, "cost": { "gold": 180, "wood": 120 }, "time": 40, "gov_req": 3, "requires": ["supply_cart"] },
-        "thunder_tech": { "name": "霹雳车", "effect": { "unlock_thunder_car": true }, "cost": { "gold": 350, "wood": 200, "stone": 150 }, "time": 60, "gov_req": 4, "requires": ["trebuchet_tech"] }
+        "thunder_tech": { "name": "霹雳车", "effect": { "unlock_thunder_car": true }, "cost": { "gold": 350, "wood": 200, "iron": 150 }, "time": 60, "gov_req": 4, "requires": ["trebuchet_tech"] },
+        "siege_hp_upgrade": { "name": "器械强化", "effect": { "siege_hp": 0.20 }, "cost": { "gold": 150, "wood": 80 }, "time": 35, "gov_req": 2, "mutex_group": "siege_focus", "mutex_note": "与「攻城利器」二选一" },
+        "siege_attack": { "name": "攻城利器", "effect": { "siege_atk": 0.20 }, "cost": { "gold": 180, "wood": 100 }, "time": 40, "gov_req": 3, "mutex_group": "siege_focus", "mutex_note": "与「器械强化」二选一" },
+        "ship_unlock": { "name": "造船术", "effect": { "unlock_straw_boat": true, "unlock_warship": true }, "cost": { "gold": 120, "wood": 100 }, "time": 35, "gov_req": 1, "requires_building": "shipyard" },
+        "ship_upgrade": { "name": "战舰锻造", "effect": { "unlock_battleship": true }, "cost": { "gold": 300, "wood": 200, "iron": 80 }, "time": 50, "gov_req": 3, "requires": ["ship_unlock"] }
+      }
+    },
+    "defense": {
+      "name": "城墙防御",
+      "techs": {
+        "wall_hp_upgrade": { "name": "铜墙铁壁", "effect": { "wall_hp": 0.30 }, "cost": { "gold": 200, "iron": 100 }, "time": 45, "gov_req": 2, "mutex_group": "fortify_focus", "mutex_note": "与「城门加固」二选一" },
+        "gate_hp_upgrade": { "name": "城门加固", "effect": { "gate_hp": 0.30 }, "cost": { "gold": 180, "iron": 80 }, "time": 40, "gov_req": 2, "mutex_group": "fortify_focus", "mutex_note": "与「铜墙铁壁」二选一" },
+        "government_hp_upgrade": { "name": "固若金汤", "effect": { "government_hp_to_10000": true }, "cost": { "gold": 500, "iron": 300 }, "time": 60, "gov_req": 3 }
+      }
+    },
+    "recruit": {
+      "name": "招募科技",
+      "techs": {
+        "elite_unlock": { "name": "精兵训练", "effect": { "unlock_tier2": true }, "cost": { "gold": 200, "iron": 50 }, "time": 30, "gov_req": 2 },
+        "special_unlock": { "name": "精兵锐士", "effect": { "unlock_tier3_special": true }, "cost": { "gold": 300, "iron": 120 }, "time": 45, "gov_req": 3, "requires": ["elite_unlock"] },
+        "imperial_unlock": { "name": "御林精兵", "effect": { "unlock_tier4_imperial": true }, "cost": { "gold": 400, "iron": 200 }, "time": 55, "gov_req": 3, "requires": ["special_unlock"] },
+        "general_attr_upgrade": { "name": "武将淬炼", "effect": { "general_base_attr": 0.05 }, "cost": { "gold": 350, "iron": 150 }, "time": 50, "gov_req": 3, "requires": ["special_unlock"] }
+      }
+    },
+    "special": {
+      "name": "特殊科技（官府4级专属）",
+      "gov_req": 4,
+      "techs": {
+        "special_fame": { "name": "名扬天下", "effect": { "all_general_attr": 0.10 }, "cost": { "gold": 1000, "food": 500 }, "time": 90, "note": "通用：所有武将基础属性+10%" },
+        "special_shu": { "name": "蜀汉·诸葛连弩", "faction": "shu", "effect": { "zhuge_nu_atk_speed": 0.30 }, "cost": { "gold": 600, "wood": 200 }, "time": 60, "note": "诸葛弩攻速+30%" },
+        "special_wei": { "name": "曹魏·虎豹骑", "faction": "wei", "effect": { "tiger_leopard_atk": 0.20 }, "cost": { "gold": 600, "iron": 200 }, "time": 60, "note": "虎豹骑攻击+20%" },
+        "special_wu": { "name": "东吴·水战", "faction": "wu", "effect": { "jinfan_jun_water_bonus": 0.25, "warship_atk": 0.20 }, "cost": { "gold": 600, "wood": 200 }, "time": 60, "note": "锦帆军水战+25%+战船攻+20%" }
       }
     }
   },
   "government_upgrade": {
-    "1_to_2": { "tech_completion_required": 0.6, "cost": { "food": 300, "wood": 220, "stone": 100 }, "time": 60 },
-    "2_to_3": { "cost": { "food": 520, "wood": 380, "stone": 220 }, "time": 75 },
-    "3_to_4": { "cost": { "food": 820, "wood": 640, "stone": 420 }, "time": 90 }
+    "1_to_2": { "tech_completion_required": 0.6, "cost": { "food": 300, "wood": 220, "iron": 100 }, "time": 60, "tech_branch_filter": "basic" },
+    "2_to_3": { "tech_completion_required": 0.6, "cost": { "food": 520, "wood": 380, "iron": 220 }, "time": 75, "tech_branch_filter": "advanced" },
+    "3_to_4": { "tech_completion_required": 1.0, "cost": { "food": 820, "wood": 640, "iron": 420 }, "time": 90, "tech_exclude_branches": ["special"], "note": "除特殊科技外全部完成" }
   }
 }

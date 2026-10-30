@@ -1,0 +1,49 @@
+{
+  "_meta": { "note": "13个特殊科技，选3。解锁：官府2级+翰林院2级。费用：500金+300木+200铁，时间60s" },
+  "research_rules": {
+    "unlock_condition": { "government_level": 2, "academy_level": 2 },
+    "max_selected": 3,
+    "cost": { "gold": 500, "wood": 300, "stone": 200 },
+    "research_time": 60,
+    "can_cancel": false
+  },
+  "categories": {
+    "resources": {
+      "name": "资源加成类（3选1）",
+      "max": 1,
+      "techs": [
+        { "id": "agriculture_master", "name": "精耕细作·特", "effect": { "farm_output_mult": 1.15 }, "desc": "农业产出 +15%" },
+        { "id": "industry_master", "name": "百工兴盛·特", "effect": { "gather_mult": 1.15, "craft_mult": 1.15 }, "desc": "采集业 +15%，工业（作坊）+15%" },
+        { "id": "drunken_happiness", "name": "醉卧沙场", "effect": { "wine_mult": 1.20, "bun_mult": 1.15 }, "desc": "酒 +20%，馒头 +15%" }
+      ]
+    },
+    "development": {
+      "name": "发展速度类（3选1）",
+      "max": 1,
+      "techs": [
+        { "id": "photographic_memory", "name": "过目不忘", "effect": { "research_speed_mult": 1.13 }, "desc": "所有科技研究速度 +13%" },
+        { "id": "excellent_training", "name": "训兵有方", "effect": { "train_speed_mult": 1.13 }, "desc": "士兵训练速度 +13%" },
+        { "id": "master_artisan", "name": "器甲通神", "effect": { "siege_manufacture_mult": 1.15 }, "desc": "器械+马匹制造速度 +15%" }
+      ]
+    },
+    "unit_stats": {
+      "name": "单位属性类（4选2）",
+      "max": 2,
+      "techs": [
+        { "id": "elite_arms", "name": "精锐武装", "effect": { "unit_attack_mult": 1.05 }, "desc": "全军攻击 +5%" },
+        { "id": "iron_wall", "name": "铁壁之师", "effect": { "unit_defense_mult": 1.05 }, "desc": "全军防御 +5%" },
+        { "id": "swift_feet", "name": "疾行如风", "effect": { "unit_speed_mult": 1.05 }, "desc": "全军移速 +5%" },
+        { "id": "battle_hardened", "name": "身经百战", "effect": { "unit_xp_mult": 1.15 }, "desc": "全军升级速度 +15%" }
+      ]
+    },
+    "general_specific": {
+      "name": "武将专属类（3选0或1）",
+      "max": 1,
+      "techs": [
+        { "id": "bloody_battle", "name": "浴血奋战", "effect": { "general_attack_mult": 1.15, "general_hp_mult": 1.15 }, "desc": "所有武将攻击 +15%，HP +15%" },
+        { "id": "diamond_body", "name": "金刚不坏", "effect": { "general_immunity": ["stun", "freeze", "knockup", "fear"] }, "desc": "所有武将免控（眩晕/冰冻/击飞/恐惧）" },
+        { "id": "bloodthirst", "name": "嗜血如命", "effect": { "general_lifesteal": 0.15 }, "desc": "所有武将攻击时吸血 15% 伤害为 HP" }
+      ]
+    }
+  }
+}

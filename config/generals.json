@@ -1,172 +1,251 @@
 ﻿{
-  "_meta": { "note": "武将四层技能：基础(全武将5个)/被动(人人)/主动(每人1-2)/名将特殊主动(出战即解锁，不绑官府)" },
-  "basic_skills": {
-    "rally": { "name": "列阵鼓舞", "type": "buff_aura", "radius": 10, "atk_buff": 0.10, "morale_buff": 15, "duration": 10, "cd": 20, "mp_cost": 20 },
-    "first_aid": { "name": "急救", "type": "heal_single", "heal_pct": 0.20, "cd": 15, "mp_cost": 25 },
-    "forced_march": { "name": "急行军", "type": "buff_self", "speed_buff": 0.25, "duration": 8, "cd": 25, "mp_cost": 20 },
-    "defensive_rally": { "name": "防守集结", "type": "buff_aura", "radius": 8, "ranged_dr": 0.20, "duration": 12, "cd": 22, "mp_cost": 20 },
-    "rallying_call": { "name": "御敌号令", "type": "debuff_aura", "radius": 5, "enemy_morale": -20, "knockback": 1.0, "cd": 30, "mp_cost": 30 }
+  "_meta": { "note": "武将四维(武力/智谋/统御/内政) + 分类(猛将/防御/进攻/谋臣/异人) + 通用技能池(11个) + 专属武将技(10个名将各1-2)。等级1-9，天赋点9个，技能满级3级" },
+  "level_curve": {
+    "max_level": 9,
+    "xp_per_level": [0, 120, 200, 320, 480, 600, 700, 820, 960],
+    "xp_note": "累计 4200 经验到 9 级。按击杀士兵 20/人 ≈ 210 杀、或击杀武将 50/人 ≈ 84 杀、或占领城镇 50/次 ≈ 84 次（单一来源）；实战混合作战约 60~120 场小规模战斗封顶。原 5→6 的 6000 视为笔误，按 600 取值。",
+    "per_level_gain": { "might": 2.0, "intelligence": 1.5, "command": 1.5, "politics": 1.0 },
+    "per_level_growth": {
+      "max_mp": 8,
+      "atk_mult": 1.04, "def_mult": 1.04, "atk_speed_mult": 1.02,
+      "hp_recover_pct": 0.30,
+      "hp_growth_rate": 1.17,
+      "hp_growth_note": "血量按 1.17 复利成长：Lv9 = Lv1 × 1.17^8 ≈ 3.51 倍（Lv1 500+ → Lv9 2000 量级），与「每级 +17%、最终约 1.4 倍以上」的实际落点一致（1.4 倍更像单级区间系数，最终按 3.5 倍实现）"
+    },
+    "talent_points_per_level": 1,
+    "max_talent_points": 9,
+    "max_skill_level": 3,
+    "max_skills_per_general": 3,
+    "nine_bonus": "体力自动恢复（傲世三国特色）"
   },
-  "passive_pool": {
-    "cavalry_speed": { "name": "骑兵加速", "effect": { "cavalry_speed": 0.15 } },
-    "cavalry_atk": { "name": "骑兵攻击", "effect": { "cavalry_atk": 0.12 } },
-    "infantry_def": { "name": "步兵防御", "effect": { "infantry_def": 0.15 } },
-    "infantry_atk": { "name": "步兵攻击", "effect": { "infantry_atk": 0.12 } },
-    "mixed_def": { "name": "混合兵防御", "effect": { "mixed_def": 0.12 } },
-    "ranged_bonus": { "name": "弓手射程攻速", "effect": { "ranged_range": 0.08, "ranged_atk": 0.10 } },
-    "army_morale": { "name": "全军士气", "effect": { "army_morale": 0.15 } },
-    "food_save": { "name": "粮食消耗降低", "effect": { "food_cost": -0.15 } },
-    "exp_bonus": { "name": "经验加成", "effect": { "exp_gain": 0.20 } },
-    "siege_bonus": { "name": "攻城加成", "effect": { "siege_damage": 0.25 } },
-    "water_bonus": { "name": "水战加成", "effect": { "water_atk": 0.20, "water_def": 0.20 } },
-    "ambush_bonus": { "name": "夜袭伏击", "effect": { "ambush_damage": 0.30 } },
-    "iron_wall": { "name": "铁壁减伤", "effect": { "melee_dr": 0.15 } },
-    "anti_cavalry": { "name": "反骑兵", "effect": { "vs_cavalry_damage": 0.25 } },
-    "siege_equip": { "name": "器械强化", "effect": { "siege_atk": 0.15 } },
-    "tax_bonus": { "name": "税率加成", "effect": { "gold_income": 0.15 } },
-    "morale_stable": { "name": "民心稳定", "effect": { "morale_decay": -0.30 } }
+  "base_stats": {
+    "might":      { "min": 50, "max": 85, "growth": 2.0, "cap": 60, "cap_desc": "武力60封顶生效（暴击率/单挑）" },
+    "intelligence": { "min": 40, "max": 90, "growth": 1.5, "cap_desc": "献策几率=智谋×0.15%" },
+    "command":    { "min": 45, "max": 80, "growth": 1.5, "cap": 60, "cap_desc": "统御60封顶生效（部队减伤15%）" },
+    "politics":   { "min": 30, "max": 95, "growth": 1.0, "cap_desc": "任命政务官后加成25%封顶" }
   },
-  "generals": {
-    "cao_cao": {
-      "name": "曹操", "faction": "wei", "class": "commander", "rarity": "legend",
-      "hp": 350, "atk": 28, "def": 10, "speed": 3.0, "morale": 90,
-      "passive": ["army_morale","food_save"],
-      "active": { "name": "号令天威", "type": "buff_aura", "atk_buff": 0.15, "morale_buff": 20, "radius": 12, "duration": 12, "cd": 30, "mp_cost": 40 },
-      "ultimate": { "name": "挟天子令诸侯", "type": "global_debuff", "enemy_tech_speed": -0.30, "enemy_morale": -10, "duration": 20, "cd": 90, "mp_cost": 80 }
-    },
-    "xiahoudun": {
-      "name": "夏侯惇", "faction": "wei", "class": "attack", "rarity": "epic",
-      "hp": 320, "atk": 35, "def": 8, "speed": 3.1, "morale": 80,
-      "passive": ["infantry_def"],
-      "active": { "name": "苍狼突刺", "type": "charge_damage", "damage": 60, "range": 3, "cd": 12, "mp_cost": 30 },
-      "ultimate": { "name": "独眼修罗", "type": "berserk", "atk_buff": 0.50, "def_debuff": 0.20, "duration": 8, "cd": 45, "mp_cost": 60 }
-    },
-    "xiahouyuan": {
-      "name": "夏侯渊", "faction": "wei", "class": "attack", "rarity": "epic",
-      "hp": 280, "atk": 32, "def": 7, "speed": 3.5, "morale": 78,
-      "passive": ["cavalry_atk"],
-      "active": { "name": "神射穿杨", "type": "ranged_damage", "damage": 50, "range": 8, "cd": 10, "mp_cost": 25 },
-      "ultimate": { "name": "急行军奇袭", "type": "teleport_assault", "damage": 70, "cd": 50, "mp_cost": 60 }
-    },
-    "caoren": {
-      "name": "曹仁", "faction": "wei", "class": "defense", "rarity": "epic",
-      "hp": 400, "atk": 22, "def": 18, "speed": 2.6, "morale": 85,
-      "passive": ["mixed_def"],
-      "active": { "name": "铁壁固守", "type": "self_shield", "shield": 100, "duration": 8, "cd": 18, "mp_cost": 30 },
-      "ultimate": { "name": "不动如山", "type": "aura_shield", "radius": 8, "ally_shield": 60, "duration": 10, "cd": 50, "mp_cost": 60 }
-    },
-    "zhangliao": {
-      "name": "张辽", "faction": "wei", "class": "attack", "rarity": "legend",
-      "hp": 340, "atk": 34, "def": 10, "speed": 3.3, "morale": 88,
-      "passive": ["cavalry_atk"],
-      "active": { "name": "威震逍遥", "type": "fear_aura", "radius": 6, "damage": 30, "enemy_morale": -15, "cd": 16, "mp_cost": 35 },
-      "ultimate": { "name": "突阵神速", "type": "charge_fear", "damage": 80, "fear_duration": 3, "cd": 55, "mp_cost": 70 }
-    },
-    "xuchu": {
-      "name": "许褚", "faction": "wei", "class": "defense", "rarity": "epic",
-      "hp": 380, "atk": 30, "def": 16, "speed": 2.7, "morale": 82,
-      "passive": ["infantry_def"],
-      "active": { "name": "震地虎吼", "type": "aoe_knockback", "radius": 5, "damage": 25, "cd": 14, "mp_cost": 30 },
-      "ultimate": { "name": "裸衣酣斗", "type": "berserk", "atk_buff": 0.60, "def_debuff": 0.30, "duration": 10, "cd": 50, "mp_cost": 60 }
-    },
-    "guojia": {
-      "name": "郭嘉", "faction": "wei", "class": "strategist", "rarity": "legend",
-      "hp": 220, "atk": 18, "def": 5, "speed": 2.8, "morale": 80,
-      "passive": ["exp_bonus"],
-      "active": { "name": "料敌先机", "type": "predict_buff", "ally_crit": 0.15, "duration": 10, "cd": 20, "mp_cost": 30 },
-      "ultimate": { "name": "遗计定策", "type": "aoe_slow_reveal", "radius": 10, "slow": 0.40, "reveal": true, "duration": 8, "cd": 60, "mp_cost": 70 }
-    },
-    "liubei": {
-      "name": "刘备", "faction": "shu", "class": "commander", "rarity": "legend",
-      "hp": 360, "atk": 26, "def": 11, "speed": 2.9, "morale": 92,
-      "passive": ["army_morale"],
-      "active": { "name": "仁德感召", "type": "heal_aura", "radius": 10, "heal_pct": 0.15, "cd": 25, "mp_cost": 40 },
-      "ultimate": { "name": "昭烈帝业", "type": "global_buff", "ally_morale": 20, "recruit_speed": 0.20, "duration": 15, "cd": 90, "mp_cost": 80 }
-    },
-    "guanyu": {
-      "name": "关羽", "faction": "shu", "class": "attack", "rarity": "legend",
-      "hp": 380, "atk": 38, "def": 12, "speed": 3.0, "morale": 90,
-      "passive": ["army_morale","infantry_atk"],
-      "active": { "name": "横刀立马", "type": "cleave", "damage": 70, "arc": 120, "range": 1.5, "cd": 12, "mp_cost": 30 },
-      "ultimate": { "name": "温酒斩华雄", "type": "aoe_burst", "radius": 4, "damage": 120, "cd": 60, "mp_cost": 70 }
-    },
-    "zhangfei": {
-      "name": "张飞", "faction": "shu", "class": "attack", "rarity": "legend",
-      "hp": 360, "atk": 36, "def": 10, "speed": 3.0, "morale": 85,
-      "passive": ["infantry_def"],
-      "active": { "name": "怒喝裂胆", "type": "fear_cone", "damage": 30, "enemy_morale": -25, "cd": 14, "mp_cost": 30 },
-      "ultimate": { "name": "断桥咆哮", "type": "mass_rout", "radius": 8, "enemy_morale": -40, "rout_chance": 0.30, "cd": 60, "mp_cost": 70 }
-    },
-    "zhaoyun": {
-      "name": "赵云", "faction": "shu", "class": "attack_cav", "rarity": "legend",
-      "hp": 340, "atk": 34, "def": 11, "speed": 3.8, "morale": 88,
-      "passive": ["cavalry_atk"],
-      "active": { "name": "龙胆突刺", "type": "charge_damage", "damage": 65, "range": 4, "cd": 10, "mp_cost": 25 },
-      "ultimate": { "name": "七进七出", "type": "dash_immune", "damage": 90, "dash_count": 3, "immune": true, "cd": 55, "mp_cost": 70 }
-    },
-    "machao": {
-      "name": "马超", "faction": "shu", "class": "attack_cav", "rarity": "epic",
-      "hp": 330, "atk": 33, "def": 9, "speed": 3.8, "morale": 82,
-      "passive": ["cavalry_atk"],
-      "active": { "name": "铁骑冲锋", "type": "charge_damage", "damage": 60, "knockback": 2.0, "cd": 12, "mp_cost": 30 },
-      "ultimate": { "name": "西凉神威", "type": "aoe_knockback", "radius": 5, "damage": 50, "cd": 50, "mp_cost": 60 }
-    },
-    "huangzhong": {
-      "name": "黄忠", "faction": "shu", "class": "ranged", "rarity": "epic",
-      "hp": 260, "atk": 36, "def": 6, "speed": 2.7, "morale": 80,
-      "passive": ["ranged_bonus"],
-      "active": { "name": "百步穿杨", "type": "ranged_burst", "damage": 80, "range": 10, "cd": 12, "mp_cost": 30 },
-      "ultimate": { "name": "定军神射", "type": "ranged_execute", "damage": 150, "range": 12, "execute_threshold": 0.30, "cd": 60, "mp_cost": 70 }
-    },
-    "zhugeliang": {
-      "name": "诸葛亮", "faction": "shu", "class": "strategist", "rarity": "legend",
-      "hp": 240, "atk": 20, "def": 6, "speed": 2.7, "morale": 90,
-      "passive": ["exp_bonus","army_morale"],
-      "active": { "name": "八卦阵", "type": "domain", "radius": 8, "enemy_slow": 0.40, "ally_immune_cc": true, "duration": 12, "cd": 30, "mp_cost": 50 },
-      "ultimate": { "name": "呼风唤雨", "type": "weather", "effect": "storm", "ally_buff": 0.10, "enemy_penalty": 0.15, "duration": 20, "cd": 90, "mp_cost": 80 }
-    },
-    "sunquan": {
-      "name": "孙权", "faction": "wu", "class": "commander", "rarity": "legend",
-      "hp": 340, "atk": 24, "def": 11, "speed": 2.8, "morale": 88,
-      "passive": ["tax_bonus"],
-      "active": { "name": "坐断东南", "type": "defense_aura", "radius": 10, "ally_def": 0.15, "duration": 12, "cd": 25, "mp_cost": 40 },
-      "ultimate": { "name": "建业称尊", "type": "global_economy", "gold_income": 0.25, "recruit_speed": 0.15, "duration": 15, "cd": 90, "mp_cost": 80 }
-    },
-    "zhouyu": {
-      "name": "周瑜", "faction": "wu", "class": "commander", "rarity": "legend",
-      "hp": 300, "atk": 28, "def": 9, "speed": 3.0, "morale": 90,
-      "passive": ["army_morale","water_bonus"],
-      "active": { "name": "曲误有察", "type": "reveal_marker", "reveal_radius": 8, "duration": 10, "cd": 20, "mp_cost": 30 },
-      "ultimate": { "name": "火烧赤壁", "type": "fire_aoe", "radius": 8, "damage": 100, "burn_dps": 20, "burn_duration": 5, "cd": 70, "mp_cost": 80 }
-    },
-    "luxun": {
-      "name": "陆逊", "faction": "wu", "class": "commander", "rarity": "epic",
-      "hp": 290, "atk": 26, "def": 9, "speed": 2.9, "morale": 88,
-      "passive": ["exp_bonus"],
-      "active": { "name": "连营火计", "type": "fire_line", "damage": 40, "burn_dps": 15, "cd": 18, "mp_cost": 35 },
-      "ultimate": { "name": "火烧连营", "type": "fire_water_combo", "radius": 10, "damage": 130, "cd": 70, "mp_cost": 80 }
-    },
-    "ganning": {
-      "name": "甘宁", "faction": "wu", "class": "attack_water", "rarity": "epic",
-      "hp": 310, "atk": 32, "def": 8, "speed": 3.3, "morale": 82,
-      "passive": ["water_bonus"],
-      "active": { "name": "锦帆劫营", "type": "raid_damage", "damage": 55, "bonus_vs_siege": 0.50, "cd": 14, "mp_cost": 30 },
-      "ultimate": { "name": "百骑劫魏营", "type": "assault", "damage": 90, "fear": true, "cd": 55, "mp_cost": 65 }
-    },
-    "taishici": {
-      "name": "太史慈", "faction": "wu", "class": "attack_ranged", "rarity": "epic",
-      "hp": 280, "atk": 34, "def": 7, "speed": 3.0, "morale": 80,
-      "passive": ["ranged_bonus"],
-      "active": { "name": "弓马绝伦", "type": "ranged_flurry", "damage": 30, "shots": 3, "cd": 12, "mp_cost": 30 },
-      "ultimate": { "name": "信义猛将", "type": "ranged_counter", "counter_damage": 1.5, "duration": 10, "cd": 50, "mp_cost": 60 }
-    },
-    "zhou_tai": {
-      "name": "周泰", "faction": "wu", "class": "defense", "rarity": "epic",
-      "hp": 420, "atk": 26, "def": 14, "speed": 2.8, "morale": 85,
-      "passive": ["infantry_def"],
-      "active": { "name": "舍身护主", "type": "shield_ally", "shield": 120, "duration": 8, "cd": 18, "mp_cost": 35 },
-      "ultimate": { "name": "百战不死", "type": "revive", "self_revive": true, "revive_hp_pct": 0.30, "cd": 90, "mp_cost": 80 }
+  "combat": {
+    "crit_rate_formula": "might × 0.15%, cap 15%",
+    "crit_damage_base": 1.25,
+    "solo_max_crit_bonus": 0.03,
+    "solo_damage_formula": "base × (1 + might_diff × 0.005), cap ±25%",
+    "default_mp": 80,
+    "mp_bonus_per_int": 0.3,
+    "mp_regen_out_of_combat": 5.0,
+    "skill_cool_down": {
+      "max": 180, "min": 60,
+      "cooldown": 0, "note": "基础技能无CD，只耗MP。武将技有CD不耗MP"
     }
   },
-  "_template_note": "其余武将按此模板批量生成：每人1-2被动、1主动、1特殊主动；名将20人/势力"
+  "classes": {
+    "warrior": { "name": "猛将", "desc": "高攻+高防，正面硬刚" },
+    "defense": { "name": "防御", "desc": "高血量+高防，守城/吸收伤害" },
+    "assault": { "name": "进攻型", "desc": "高攻+高移速，切入后排" },
+    "strategist": { "name": "谋臣", "desc": "高智谋，献策+黑雾看穿，下场打架弱" },
+    "trickster": { "name": "异人", "desc": "技能偏门，有独特点" }
+  },
+  "general_pool": [
+    {
+      "id": "guanyu", "name": "关羽", "class": "warrior", "faction": "shu",
+      "base": { "might": 95, "intelligence": 65, "command": 82, "politics": 55 },
+      "skills": ["yongwu", "shuichiyiqun"],
+      "passive": ["tiejun", "xianfeng"],
+      "base_mp": 80, "hp_mult": 1.15, "hp_lv1": 620, "hp_lv9": 2300,
+      "notes": "青龙偃月为被动暴击伤害+20/30/40%（默认爆伤125%）"
+    },
+    {
+      "id": "zhaoyun", "name": "赵云", "class": "assault", "faction": "shu",
+      "base": { "might": 90, "intelligence": 60, "command": 75, "politics": 40 },
+      "skills": ["changbanpo"],
+      "passive": ["qingqi", "xianfeng"],
+      "base_mp": 80, "hp_mult": 1.05, "hp_lv1": 580, "hp_lv9": 2150
+    },
+    {
+      "id": "zhugeliang", "name": "诸葛亮", "class": "strategist", "faction": "shu",
+      "base": { "might": 50, "intelligence": 95, "command": 65, "politics": 92 },
+      "skills": ["bazhentú", "kongchengji"],
+      "passive": ["shenmou", "jianbi"],
+      "base_mp": 110, "hp_mult": 0.85, "hp_lv1": 520, "hp_lv9": 1800
+    },
+    {
+      "id": "simayi", "name": "司马懿", "class": "strategist", "faction": "wei",
+      "base": { "might": 58, "intelligence": 88, "command": 70, "politics": 85 },
+      "skills": ["yingshilanggu"],
+      "passive": ["shenmou"],
+      "base_mp": 105, "hp_mult": 0.90, "hp_lv1": 520, "hp_lv9": 1800
+    },
+    {
+      "id": "caocao", "name": "曹操", "class": "warrior", "faction": "wei",
+      "base": { "might": 85, "intelligence": 72, "command": 80, "politics": 90 },
+      "skills": ["haolingtianwei"],
+      "passive": ["weizhen", "jianbi"],
+      "base_mp": 90, "hp_mult": 1.10, "hp_lv1": 560, "hp_lv9": 2000
+    },
+    {
+      "id": "zhouyu", "name": "周瑜", "class": "assault", "faction": "wu",
+      "base": { "might": 70, "intelligence": 80, "command": 78, "politics": 65 },
+      "skills": ["chibi"],
+      "passive": ["shenmou", "qingqi"],
+      "base_mp": 95, "hp_mult": 0.95, "hp_lv1": 540, "hp_lv9": 1900
+    },
+    {
+      "id": "lvbu", "name": "吕布", "class": "trickster", "faction": "qunxiong",
+      "base": { "might": 98, "intelligence": 42, "command": 55, "politics": 35 },
+      "skills": ["fangtianhuaji"],
+      "passive": ["xianfeng", "tiejun"],
+      "base_mp": 85, "hp_mult": 1.18, "hp_lv1": 650, "hp_lv9": 2400
+    },
+    {
+      "id": "zhangliao", "name": "张辽", "class": "defense", "faction": "wei",
+      "base": { "might": 88, "intelligence": 60, "command": 78, "politics": 45 },
+      "skills": ["weizhixiaoyaojin"],
+      "passive": ["jianbi", "weizhen"],
+      "base_mp": 82, "hp_mult": 1.12, "hp_lv1": 560, "hp_lv9": 2000
+    },
+    {
+      "id": "caoren", "name": "曹仁", "class": "defense", "faction": "wei",
+      "base": { "might": 72, "intelligence": 55, "command": 80, "politics": 55 },
+      "skills": [],
+      "passive": ["jianbi", "tiejun"],
+      "base_mp": 78, "hp_mult": 1.30, "hp_lv1": 600, "hp_lv9": 2000
+    },
+    {
+      "id": "diaochan", "name": "貂蝉", "class": "trickster", "faction": "qunxiong",
+      "base": { "might": 40, "intelligence": 75, "command": 30, "politics": 88 },
+      "skills": [],
+      "passive": ["shenmou"],
+      "base_mp": 120, "hp_mult": 0.70, "hp_lv1": 500, "hp_lv9": 1700
+    }
+  ],
+  "promoted_hp": {
+    "lv1_base": 500,
+    "lv9_base": 2000,
+    "class_mult": { "warrior": 1.00, "assault": 1.00, "defense": 1.10, "strategist": 0.94, "trickster": 0.92 },
+    "note": "兵→将晋升用：Lv1 = 500×类型系数（全部 500 以上），Lv9 = 2000×类型系数（名将不受此限）"
+  },
+  "promote": {
+    "_note": "🎖 士兵晋升武将：按类型发 3 个基础技能（1 个本类型核心 + 2 个通用）+ 1 个带兵被动",
+    "skill_count": 3,
+    "passive_count": 1,
+    "talent_points": 1,
+    "class_skill_pool": {
+      "warrior":   ["yongwu", "jixing", "chuanjia"],
+      "defense":   ["guben", "yangqi", "chuanjia"],
+      "assault":   ["jixing", "yongwu", "xunjie"],
+      "strategist":["anmin", "guben", "jiansu"],
+      "trickster": ["bingzhui", "jiansu", "xunjie"]
+    },
+    "common_fill": ["yongwu", "jixing", "guben", "xunjie", "anmin", "jiansu", "bingzhui", "yangqi"]
+  },
+  "passive_pool": {
+    "_note": "🎖 带兵被动：General.get_passive_effects() 汇总，_init_general 直接乘到自身数值；后续可扩展到周围士兵",
+    "tiejun":   { "name": "铁军", "desc": "自身生命上限 +10%", "effect": { "hp_mult": 0.10 } },
+    "xianfeng": { "name": "先锋", "desc": "自身攻击 +10%", "effect": { "atk_mult": 0.10 } },
+    "jianbi":   { "name": "坚壁", "desc": "自身防御 +15%", "effect": { "def_mult": 0.15 } },
+    "qingqi":   { "name": "轻骑", "desc": "自身移速 +10%", "effect": { "speed_mult": 0.10 } },
+    "shenmou":  { "name": "神谋", "desc": "法力上限 +20", "effect": { "mp_add": 20.0 } },
+    "weizhen":  { "name": "威震", "desc": "自身士气上限表现 +8%（士气 +8）", "effect": { "morale_add": 8.0 } },
+    "jixi":     { "name": "疾袭", "desc": "自身攻速 +8%", "effect": { "atk_speed_mult": 0.08 } }
+  },
+  "reincarnation": {
+    "grace_period_seconds": 180,
+    "heal_skill_rescue": { "skill_owner_required": "heal", "time_to_rescue": 5, "revived_hp_percent": 0.5 },
+    "peasant_guard_rescue": { "peasants_needed": 3, "time_to_rescue": 30, "revived_hp_percent": 0.8 },
+    "perm_death_after_grace": true
+  },
+  "common_skills": {
+    "_note": "基础技能无CD，只耗MP。施法人数：Lv1=1人，Lv2=目标+旁连1友军，Lv3=目标+旁连2友军。骑马半径扩大到2.5，步行2.0。骑/步都能放。",
+    "max_skill_level": 3,
+    "cast_radius_on_horse": 2.5,
+    "cast_radius_on_foot": 2.0,
+    "skills": [
+      { "id": "yangqi", "name": "养气", "type": "buff", "mp_cost": 30, "target_self_only": false, "desc": "全军不掉体力",
+        "levels": [
+          { "desc": "15s 不掉体力", "no_drain_seconds": 15 },
+          { "desc": "22s 不掉体力", "no_drain_seconds": 22 },
+          { "desc": "30s 不掉体力", "no_drain_seconds": 30 }
+        ] },
+      { "id": "guben", "name": "固本", "type": "heal_stamina", "mp_cost": 25, "target_self_only": false, "desc": "恢复目标体力值",
+        "levels": [ { "stamina_restore": 40 }, { "stamina_restore": 60 }, { "stamina_restore": 90 } ] },
+      { "id": "heal", "name": "治疗", "type": "heal_hp", "mp_cost_per_sec": 25, "target_self_only": false, "desc": "持续回血",
+        "levels": [ { "hp_per_sec": 30, "duration": 4 }, { "hp_per_sec": 50, "duration": 5 }, { "hp_per_sec": 80, "duration": 6 } ] },
+      { "id": "kaitian", "name": "开天", "type": "knockup", "mp_cost": 40, "target_self_only": true, "desc": "击飞+眩晕",
+        "levels": [ { "knockup_grids": 1, "stun_seconds": 1.5 }, { "knockup_grids": 1.5, "stun_seconds": 2.0 }, { "knockup_grids": 2, "stun_seconds": 2.5 } ] },
+      { "id": "jixing", "name": "疾行", "type": "buff_speed", "mp_cost": 20, "target_self_only": false, "desc": "移速+",
+        "levels": [ { "speed_mult": 1.30, "duration": 6 }, { "speed_mult": 1.45, "duration": 8 }, { "speed_mult": 1.60, "duration": 10 } ] },
+      { "id": "yongwu", "name": "勇武", "type": "buff_attack", "mp_cost": 40, "target_self_only": false, "desc": "攻击+",
+        "levels": [ { "attack_mult": 1.15, "duration": 8 }, { "attack_mult": 1.22, "duration": 10 }, { "attack_mult": 1.30, "duration": 12 } ] },
+      { "id": "chuanjia", "name": "穿甲", "type": "armor_pierce", "mp_cost": 35, "target_self_only": true, "desc": "无视防御",
+        "levels": [ { "pierce_percent": 0.20, "duration": 8 }, { "pierce_percent": 0.35, "duration": 10 }, { "pierce_percent": 0.50, "duration": 12 } ] },
+      { "id": "bingzhui", "name": "冰锥", "type": "freeze", "mp_cost": 35, "target_self_only": true, "desc": "冰冻",
+        "levels": [ { "freeze_seconds": 1.5 }, { "freeze_seconds": 2.0 }, { "freeze_seconds": 2.5 } ] },
+      { "id": "jiansu", "name": "减速", "type": "slow", "mp_cost": 20, "target_self_only": true, "desc": "移速-",
+        "levels": [ { "speed_mult": 0.60, "duration": 4 }, { "speed_mult": 0.50, "duration": 5 }, { "speed_mult": 0.40, "duration": 6 } ] },
+      { "id": "xunjie", "name": "迅捷", "type": "buff_attack_speed", "mp_cost": 30, "target_self_only": false, "desc": "攻速+",
+        "levels": [ { "atkspeed_mult": 1.25, "duration": 6 }, { "atkspeed_mult": 1.40, "duration": 8 }, { "atkspeed_mult": 1.55, "duration": 10 } ] },
+      { "id": "anmin", "name": "安民", "type": "morale", "mp_cost": 30, "target_self_only": false, "desc": "恢复士气",
+        "levels": [ { "morale_restore": 8 }, { "morale_restore": 12 }, { "morale_restore": 18 } ] }
+    ]
+  },
+  "unique_skills": {
+    "_note": "武将技有CD不耗MP，骑马步行都能放，不做位移/冲刺类技能",
+    "max_skill_level": 3,
+    "skills": [
+      { "id": "qinglongyanyue", "name": "青龙偃月", "owner": "guanyu", "type": "passive_crit_bonus", "cooldown": -1, "desc": "暴击伤害加成（被动永久）",
+        "levels": [ { "crit_damage_add": 0.20 }, { "crit_damage_add": 0.30 }, { "crit_damage_add": 0.40 } ],
+        "notes": "默认暴击伤害125%，满级后165%" },
+      { "id": "shuichiyiqun", "name": "水淹七军", "owner": "guanyu", "type": "aoe_damage_debuff", "cooldown": 120, "max_control": 3.0,
+        "levels": [ { "damage": 60, "slow_seconds": 3.0 }, { "damage": 90, "slow_seconds": 3.0 }, { "damage": 120, "slow_seconds": 3.0 } ] },
+      { "id": "changbanpo", "name": "长坂坡", "owner": "zhaoyun", "type": "invuln", "cooldown": 180, "desc": "自身无敌（无位移冲刺）",
+        "levels": [ { "invuln_seconds": 3 }, { "invuln_seconds": 4 }, { "invuln_seconds": 5 } ] },
+      { "id": "bazhentú", "name": "八阵图", "owner": "zhugeliang", "type": "aura_buff", "cooldown": 120,
+        "levels": [ { "ally_atk_add": 0.10, "ally_def_add": 0.10 }, { "ally_atk_add": 0.15, "ally_def_add": 0.15 }, { "ally_atk_add": 0.20, "ally_def_add": 0.20 } ] },
+      { "id": "kongchengji", "name": "空城计", "owner": "zhugeliang", "type": "mass_invuln", "cooldown": 180,
+        "levels": [ { "invuln_seconds": 4 }, { "invuln_seconds": 6 }, { "invuln_seconds": 8 } ] },
+      { "id": "yingshilanggu", "name": "鹰视狼顾", "owner": "simayi", "type": "fog_pierce", "cooldown": 90,
+        "levels": [ { "reveal_seconds": 6 }, { "reveal_seconds": 8 }, { "reveal_seconds": 10 } ] },
+      { "id": "haolingtianwei", "name": "号令天威", "owner": "caocao", "type": "mass_buff_fear", "cooldown": 150, "max_control": 3.0,
+        "levels": [ { "ally_atk_add": 0.15, "fear_seconds": 1 }, { "ally_atk_add": 0.20, "fear_seconds": 2 }, { "ally_atk_add": 0.25, "fear_seconds": 3 } ] },
+      { "id": "chibi", "name": "赤壁", "owner": "zhouyu", "type": "aoe_dot", "cooldown": 180,
+        "levels": [ { "damage": 50, "burn_per_sec": 15, "duration": 3 }, { "damage": 80, "burn_per_sec": 20, "duration": 3 }, { "damage": 110, "burn_per_sec": 25, "duration": 3 } ] },
+      { "id": "fangtianhuaji", "name": "方天画戟", "owner": "lvbu", "type": "multi_hit", "cooldown": 60,
+        "levels": [ { "hits": 3, "multiplier_per_hit": 1.10 }, { "hits": 3, "multiplier_per_hit": 1.25 }, { "hits": 3, "multiplier_per_hit": 1.40 } ] },
+      { "id": "weizhixiaoyaojin", "name": "威震逍遥津", "owner": "zhangliao", "type": "mass_charge_stun", "cooldown": 120, "max_control": 3.0,
+        "levels": [ { "ally_speed_add": 0.30, "stun_seconds": 2.0 }, { "ally_speed_add": 0.30, "stun_seconds": 2.5 }, { "ally_speed_add": 0.30, "stun_seconds": 3.0 } ] }
+    ]
+  },
+  "solo_duel": {
+    "toggleable": true,
+    "default_enabled": false,
+    "requires_both_enabled": true,
+    "max_duration_seconds": 10,
+    "hp_loss_on_lose_percent": 0.80,
+    "morale_loss_on_lose": 10
+  },
+  "advice_system": {
+    "trigger": "in_combat + intelligence >= 50",
+    "chance_formula": "intelligence × 0.0015 (max ~15%)",
+    "cooldown_seconds": 30,
+    "possible_advices": [
+      { "id": "ambush_warning", "desc": "主公！敌军在 %s 处有埋伏！", "effect": "mark_enemies_5s" },
+      { "id": "fire_tip", "desc": "此时火攻可破敌！", "effect": "next_attack_damage_add_15%" },
+      { "id": "morale_drop_tip", "desc": "敌军士气低落，正好进攻！", "effect": "enemy_morale_10" }
+    ]
+  },
+  "controls": {
+    "max_duration_seconds": {
+      "freeze": 2.5,
+      "stun": 3.0,
+      "knockup_with_stun": 2.5,
+      "slow": 6.0,
+      "fear": 3.0,
+      "weaken": 10.0,
+      "vulnerable": 10.0
+    }
+  },
+  "food_system": {
+    "grain": { "source": "farm", "consumption": "per_unit_0.1_per_10s" },
+    "bun": { "source": "craft_workshop", "recipe": "grain×2", "effect": "combat_regen_1hp_per_sec" },
+    "wine": { "source": "craft_workshop", "recipe": "grain×3+water", "effect_pre_battle": "morale+20", "effect_post_defeat": "morale_recover", "effect_solo": "might+5%" }
+  }
 }

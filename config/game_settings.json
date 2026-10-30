@@ -1,0 +1,73 @@
+{
+  "_meta": { "note": "开局自定义完整数据。apply_settings() 在 GameManager._ready 读取应用" },
+  "difficulty_presets": {
+    "easy":    { "name": "简单",   "reaction_delay": 3.0, "starting_resources_mult": 1.0, "starting_peasants": 2 },
+    "normal":  { "name": "普通",   "reaction_delay": 2.0, "starting_resources_mult": 1.2, "starting_peasants": 3 },
+    "hard":    { "name": "困难",   "reaction_delay": 1.0, "starting_resources_mult": 1.8, "starting_peasants": 4 },
+    "extreme": { "name": "最高难度", "reaction_delay": 0.5, "starting_resources_mult": 2.5, "starting_peasants": 6 }
+  },
+  "_ai_note": "所有档位初始建筑一样：官府+牌楼。决策逻辑全部相同（都有思路会进攻），只比操作速度（从动作就绪到执行的延迟）。兵种攻击力/农夫产出/建造时间全难度相同不缩放",
+  "initial_resources_level": {
+    "poor":      { "name": "贫乏", "mult": 0.6 },
+    "normal":    { "name": "一般", "mult": 1.0 },
+    "prosperous":{ "name": "富裕", "mult": 1.6 }
+  },
+  "initial_cities": {
+    "1": { "name": "1 城", "count": 1 },
+    "2": { "name": "2 城", "count": 2 },
+    "3": { "name": "3 城", "count": 3 }
+  },
+  "victory_conditions": {
+    "eliminate_all": { "name": "消灭所有势力", "desc": "摧毁所有敌方官府+消灭全部敌方单位" },
+    "occupy_cities": { "name": "占领指定城池", "desc": "占领全部城池或数量过半" },
+    "time_limit":    { "name": "时间限制",    "desc": "时间结束时分数最高者胜" },
+    "score":         { "name": "分数胜负",    "desc": "按城池+军队+科技分数达阈值胜" }
+  },
+  "time_limits": [
+    { "id": "none",   "name": "无时间限制", "seconds": 0 },
+    { "id": "60min",  "name": "60 分钟",   "seconds": 3600 },
+    { "id": "120min", "name": "120 分钟",  "seconds": 7200 },
+    { "id": "240min", "name": "240 分钟",  "seconds": 14400 }
+  ],
+  "portrait_pool": [
+    { "id": "caocao", "name": "曹操", "faction": "wei" },
+    { "id": "liubei", "name": "刘备", "faction": "shu" },
+    { "id": "sunquan", "name": "孙权", "faction": "wu" },
+    { "id": "guanyu", "name": "关羽", "faction": "shu" },
+    { "id": "zhaoyun", "name": "赵云", "faction": "shu" },
+    { "id": "zhugeliang", "name": "诸葛亮", "faction": "shu" },
+    { "id": "zhangliao", "name": "张辽", "faction": "wei" },
+    { "id": "xiahoudun", "name": "夏侯惇", "faction": "wei" },
+    { "id": "zhouyu", "name": "周瑜", "faction": "wu" },
+    { "id": "lvbu", "name": "吕布", "faction": "neutral" },
+    { "id": "diaochan", "name": "貂蝉", "faction": "neutral" }
+  ],
+  "generals_options": [
+    { "count": 0, "desc": "0 个（无初始武将）" },
+    { "count": 1, "desc": "1 个（随机名将）" },
+    { "count": 2, "desc": "2 个" },
+    { "count": 3, "desc": "3 个" },
+    { "count": 5, "desc": "5 个（豪华开局）" }
+  ],
+  "default_settings": {
+    "player_faction": "shu",
+    "player_name": "主公",
+    "player_portrait": "liubei",
+    "player_color": "green",
+    "faction_color_key": "green",
+    "map_id": "jiangshan_yitong",
+    "difficulty": "normal",
+    "ai_faction_count": 2,
+    "ai_ally": false,
+    "initial_resources": "normal",
+    "initial_cities": 1,
+    "fog_of_war": true,
+    "disasters": true,
+    "buddha_head": false,
+    "quick_game": false,
+    "victory_condition": "eliminate_all",
+    "time_limit": "none",
+    "initial_generals_count": 1,
+    "solo_duel_enabled": false
+  }
+}
